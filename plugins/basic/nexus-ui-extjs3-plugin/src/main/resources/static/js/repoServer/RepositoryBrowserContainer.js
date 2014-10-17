@@ -98,6 +98,7 @@ Sonatype.Events.addListener('fileNodeClickedEvent', function(node, passthru) {
           
           passthru.container.artifactContainer.updateArtifact({
                 format : (payload && payload.data) ? payload.data.format : null,
+                repoId : (payload && payload.data) ? payload.data.id : null,
                 text : node.attributes.text,
                 leaf : node.attributes.leaf,
                 resourceURI : node.attributes.resourceURI
