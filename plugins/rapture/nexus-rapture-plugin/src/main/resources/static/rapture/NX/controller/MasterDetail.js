@@ -63,27 +63,37 @@ Ext.define('NX.controller.MasterDetail', {
     var me = this,
         componentListener = {};
 
-    componentListener[me.list] = {
-      afterrender: me.onAfterRender,
-      selection: me.onSelection,
-      cellclick: me.onCellClick
-    };
-    componentListener[me.list + ' button[action=new]'] = {
-      afterrender: me.bindNewButton
-    };
-    componentListener[me.list + ' ^ nx-masterdetail-panel nx-masterdetail-tabs > tabpanel'] = {
-      tabchange: function() {
-        var selected = me.getList().getSelectionModel().getSelection();
-        me.bookmark(selected.length === 1 ? selected[0] : null);
-      }
-    };
+    // Normalize lists into an array
+    if (!Ext.isArray(me.list)) {
+      me.list = [me.list];
+    }
 
-    // bind to a delete button if delete function defined
-    if (me.deleteModel) {
-      componentListener[me.list + ' ^ nx-masterdetail-panel nx-masterdetail-tabs button[action=delete]'] = {
-        afterrender: me.bindDeleteButton,
-        click: me.onDelete
+    // Add event handlers to each list
+    for (var i = 0; i < me.list.length; ++i) {
+      componentListener[me.list[i]] = {
+        afterrender: me.onAfterRender,
+        selection: me.onSelection,
+        cellclick: me.onCellClick
       };
+      componentListener[me.list[i] + ' button[action=new]'] = {
+        afterrender: me.bindNewButton
+      };
+      componentListener[me.list[i] + ' ^ nx-masterdetail-panel nx-masterdetail-tabs > tabpanel'] = {
+        tabchange: function() {
+          var selected = me.getList().getSelectionModel().getSelection();
+          me.bookmark(selected.length === 1 ? selected[0] : null);
+          // TODO: implement activeSelection
+          //me.bookmark(me.activeSelection);
+        }
+      };
+
+      // bind to a delete button if delete function defined
+      if (me.deleteModel) {
+        componentListener[me.list[i] + ' ^ nx-masterdetail-panel nx-masterdetail-tabs button[action=delete]'] = {
+          afterrender: me.bindDeleteButton,
+          click: me.onDelete
+        };
+      }
     }
 
     me.listen({
