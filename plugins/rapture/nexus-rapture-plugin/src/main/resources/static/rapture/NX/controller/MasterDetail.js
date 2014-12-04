@@ -116,12 +116,25 @@ Ext.define('NX.controller.MasterDetail', {
     }
   },
 
+  // Return references to all of the master views
+  getLists: function() {
+    var me = this,
+      feature = me.getFeature(),
+      lists = [];
+
+    for (var i = 0; i < me.list.length; ++i) {
+      lists.push(feature.down(me.list[i]));
+    }
+
+    return lists;
+  },
+
   loadStore: function () {
     var me = this,
-        list = me.getList();
+        lists = me.getLists();
 
-    if (list) {
-      list.getStore().load();
+    for (var i = 0; i < lists.length; ++i) {
+      lists[i].getStore().load();
     }
   },
 
@@ -137,36 +150,38 @@ Ext.define('NX.controller.MasterDetail', {
 
   onStoreLoad: function () {
     var me = this,
-        list = me.getList();
+        lists = me.getLists();
 
-    if (list) {
+    if (lists.length) {
       me.navigateTo(NX.Bookmarks.getBookmark());
     }
   },
 
   reselect: function () {
     var me = this,
-        list = me.getList();
+        lists = me.getLists();
 
-    if (list) {
+    if (lists.length) {
       me.navigateTo(NX.Bookmarks.getBookmark());
     }
   },
 
   refreshList: function () {
     var me = this,
-        list = me.getList();
+        lists = me.getLists();
 
-    if (list) {
+    if (lists.length) {
       me.loadStore();
     }
   },
 
   onAfterRender: function () {
     var me = this,
-        list = me.getList();
+        lists = me.getLists();
 
-    list.mon(list.getStore(), 'load', me.onStoreLoad, me);
+    for (var i = 0; i < lists.length; ++i) {
+      lists[i].mon(lists[i].getStore(), 'load', me.onStoreLoad, me);
+    }
     me.loadStore();
   },
 
@@ -179,15 +194,21 @@ Ext.define('NX.controller.MasterDetail', {
 
   onModelChanged: function (model) {
     var me = this,
-        list = me.getList(),
-        masterdetail = list.up('nx-masterdetail-panel');
+        lists = me.getLists(),
+        masterdetail = me.getFeature();
 
     if (model) {
-      list.getView().focusRow(model);
-      masterdetail.setDescription(me.getDescription(model));
-    }
-    else {
-      masterdetail.setDescription('Empty selection');
+      // Find the list to which this model belongs, and focus on it
+      for (var i = 0; i < lists.length; ++i) {
+        if (lists[i].getView().getNode(model)) {
+          lists[i].getView().focusRow(model);
+
+          // TODO: Set the description of next view
+          masterdetail.setDescription(me.getDescription(model), i + 1);
+
+          break;
+        }
+      }
     }
   },
 
@@ -195,15 +216,26 @@ Ext.define('NX.controller.MasterDetail', {
    * Make the detail view appear, update models and bookmarks
    */
   loadView: function (list, model, animate) {
-    var me = this;
+    var me = this,
+      lists = me.getLists(),
+      feature = me.getFeature();
 
-    if (model) {
-      me.getList().fireEvent("selection", list, model);
-      me.onModelChanged(model);
-      me.getList().up('#nx-drilldown').setItemBookmark(0, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)), me);
-      me.getList().up('#nx-drilldown').showChild(1, animate);
-    } else {
-      me.getList().up('#nx-drilldown').showChild(0, animate);
+    // No model specified, go to the root view
+    if (!model) {
+      feature.down('#nx-drilldown').showChild(0, animate);
+    }
+
+    // Model specified, find the associated list and show that
+    for (var i = 0; i < lists.length; ++i) {
+      if (list === lists[i].getView() && model) {
+        lists[i].fireEvent("selection", list, model);
+        me.onModelChanged(model);
+        feature.down('#nx-drilldown').setItemBookmark(0, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)), me);
+
+        // Show the next view in line
+        feature.down('#nx-drilldown').showChild(i + 1, animate);
+        break;
+      }
     }
   },
 
@@ -264,7 +296,7 @@ Ext.define('NX.controller.MasterDetail', {
           list.getSelectionModel().deselectAll(true);
           list.getSelectionModel().select(model, false, true);
           list.getView().focusRow(model);
-          me.loadView(list, model, false);
+          me.loadView(list.getView(), model, false);
           list.fireEvent('selectionchange', list, [model]);
         }
         if (tabBookmark) {
@@ -273,7 +305,7 @@ Ext.define('NX.controller.MasterDetail', {
       }
       else {
         list.getSelectionModel().deselectAll();
-        me.loadView(list, null, false);
+        me.loadView(list.getView(), null, false);
       }
     }
   },
