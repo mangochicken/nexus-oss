@@ -148,7 +148,6 @@ Ext.define('NX.view.drilldown.Drilldown', {
     me.setItemName = function (index, text) {
       var me = this;
       me.items.items[index].setItemName(text);
-      console.log("Setting the item name");
     };
 
     me.setItemClass = function (index, cls) {

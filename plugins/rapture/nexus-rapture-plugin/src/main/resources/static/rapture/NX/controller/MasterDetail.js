@@ -138,13 +138,10 @@ Ext.define('NX.controller.MasterDetail', {
     }
   },
 
-  loadStoreAndSelect: function (modelId) {
+  loadStoreAndSelect: function (model) {
     var me = this;
 
-    if (modelId) {
-      me.bookmarkAt(modelId);
-    }
-
+    me.bookmark(model);
     me.loadStore();
   },
 
@@ -240,38 +237,49 @@ Ext.define('NX.controller.MasterDetail', {
   },
 
   /**
-   * Bookmark current selected model / selected tab.
+   * Bookmark specified model / selected tab.
    */
   bookmark: function (model) {
     var me = this,
-        modelId;
-
-    if (model && model.getId) {
-      modelId = model.getId();
-    }
-
-    me.bookmarkAt(modelId);
-  },
-
-  /**
-   * Bookmark specified model / selected tab.
-   */
-  bookmarkAt: function (modelId) {
-    var me = this,
+        lists = me.getLists(),
         feature = me.getFeature(),
         tabs = feature.down('nx-masterdetail-tabs'),
         bookmark = NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)),
         segments = [],
-        selectedTabBookmark;
+        selected,
+        selectedTabBookmark,
+        index;
 
-    if (modelId) {
-      segments.push(encodeURIComponent(modelId));
-      selectedTabBookmark = tabs.getBookmarkOfSelectedTab();
-      if (selectedTabBookmark) {
-        segments.push(selectedTabBookmark);
+    // Find all parent models and add them to the bookmark array
+    for (index = 0; index < lists.length; ++index) {
+      if (!lists[index].getView().getNode(model)) {
+        selected = lists[index].getSelectionModel().getSelection();
+        if (selected.length === 1) {
+          segments.push(encodeURIComponent(selected[0].getId()));
+        } else {
+          // Error: cannot construct a complete path
+          return;
+        }
+      } else {
+        // All done adding parents
+        break;
       }
-      bookmark.appendSegments(segments);
     }
+
+    // Add the currently selected model to the bookmark array
+    if (model) {
+      segments.push(encodeURIComponent(model.getId()));
+
+      // Is this the last list model? And is a tab selected? If so, add it.
+      if (index == lists.length - 1) {
+        selectedTabBookmark = tabs.getBookmarkOfSelectedTab();
+        if (selectedTabBookmark) {
+          segments.push(selectedTabBookmark);
+        }
+      }
+    }
+
+    bookmark.appendSegments(segments);
     NX.Bookmarks.bookmark(bookmark, me);
   },
 

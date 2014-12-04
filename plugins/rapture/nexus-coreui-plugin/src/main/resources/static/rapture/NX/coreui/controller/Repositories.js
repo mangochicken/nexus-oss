@@ -321,7 +321,7 @@ Ext.define('NX.coreui.controller.Repositories', {
 
     if (win) {
       win.close();
-      me.loadStoreAndSelect(action.result.data.id);
+      me.loadStoreAndSelect(action.result.data);
     }
     else {
       me.loadStore();
