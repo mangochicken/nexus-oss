@@ -126,10 +126,8 @@ Ext.define('NX.controller.MasterDetail', {
       feature = me.getFeature(),
       lists = [];
 
-    if (feature) {
-      for (var i = 0; i < me.list.length; ++i) {
-        lists.push(feature.down(me.list[i]));
-      }
+    for (var i = 0; i < me.list.length; ++i) {
+      lists.push(feature.down(me.list[i]));
     }
 
     return lists;
@@ -198,17 +196,14 @@ Ext.define('NX.controller.MasterDetail', {
   onModelChanged: function (model) {
     var me = this,
         lists = me.getLists(),
-        masterdetail = me.getFeature();
+        feature = me.getFeature();
 
     if (model) {
       // Find the list to which this model belongs, and focus on it
       for (var i = 0; i < lists.length; ++i) {
         if (lists[i].getView().getNode(model)) {
           lists[i].getView().focusRow(model);
-
-          // TODO: Set the description of next view
-          masterdetail.setDescription(me.getDescription(model), i + 1);
-
+          feature.down('nx-drilldown').setItemName(i + 1, me.getDescription(model));
           break;
         }
       }
@@ -325,11 +320,11 @@ Ext.define('NX.controller.MasterDetail', {
         if (index < lists.length) {
           // It’s a list, show the next view
           modelId = decodeURIComponent(last_id);
-          me.loadView(lists[index].getView(), lists[index].getStore().getById(modelId), true);
+          me.loadView(lists[index].getView(), lists[index].getStore().getById(modelId), false);
         } else {
           // It’s a tab, select and show it
           modelId = decodeURIComponent(parent_ids[parent_ids.length - 1]);
-          me.loadView(lists[lists.length - 1].getView(), lists[lists.length - 1].getStore().getById(modelId), true);
+          me.loadView(lists[lists.length - 1].getView(), lists[lists.length - 1].getStore().getById(modelId), false);
           feature.down('nx-masterdetail-tabs').setActiveTabByBookmark(last_id);
         }
 
