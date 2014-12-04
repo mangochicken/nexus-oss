@@ -258,8 +258,8 @@ Ext.define('NX.controller.MasterDetail', {
    */
   bookmarkAt: function (modelId) {
     var me = this,
-        list = me.getList(),
-        tabs = list.up('nx-masterdetail-panel').down('nx-masterdetail-tabs'),
+        feature = me.getFeature(),
+        tabs = feature.down('nx-masterdetail-tabs'),
         bookmark = NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)),
         segments = [],
         selectedTabBookmark;
@@ -281,38 +281,37 @@ Ext.define('NX.controller.MasterDetail', {
    */
   navigateTo: function (bookmark) {
     var me = this,
-        list = me.getList(),
+        lists = me.getLists(),
+        feature = me.getFeature(),
         store, modelId, tabBookmark, model, tabs;
 
-    if (list && bookmark) {
+    if (lists.length && bookmark) {
       modelId = bookmark.getSegment(1);
       tabBookmark = bookmark.getSegment(2);
       if (modelId) {
         modelId = decodeURIComponent(modelId);
         me.logDebug('Navigate to: ' + modelId + (tabBookmark ? ":" + tabBookmark : ''));
-        store = list.getStore();
+        store = lists[0].getStore();
         model = store.getById(modelId);
         if (model) {
-          list.getSelectionModel().deselectAll(true);
-          list.getSelectionModel().select(model, false, true);
-          list.getView().focusRow(model);
-          me.loadView(list.getView(), model, false);
-          list.fireEvent('selectionchange', list, [model]);
+          me.loadView(lists[0].getView(), model, false);
+          lists[0].fireEvent('selectionchange', lists[0], [model]);
         }
         if (tabBookmark) {
-          list.up('nx-masterdetail-panel').down('nx-masterdetail-tabs').setActiveTabByBookmark(tabBookmark);
+          feature.down('nx-masterdetail-tabs').setActiveTabByBookmark(tabBookmark);
         }
       }
       else {
-        list.getSelectionModel().deselectAll();
-        me.loadView(list.getView(), null, false);
+        lists[0].getSelectionModel().deselectAll();
+        me.loadView(lists[0].getView(), null, false);
       }
     }
   },
 
+  // TODO: wire this to work with multiple list views
   onDelete: function () {
     var me = this,
-        selection = me.getList().getSelectionModel().getSelection(),
+        selection = me.getLists()[0].getSelectionModel().getSelection(),
         description;
 
     if (Ext.isDefined(selection) && selection.length > 0) {
@@ -322,23 +321,6 @@ Ext.define('NX.controller.MasterDetail', {
         me.bookmark(null);
       }, {scope: me});
     }
-  },
-
-  /**
-   * @returns {Ext.data.Model} selected model if there is a selection, undefined otherwise
-   */
-  selectedModel: function () {
-    var me = this,
-        list = me.getList(),
-        selection, model;
-
-    if (list) {
-      selection = list.getSelectionModel().getSelection();
-      if (selection.length) {
-        model = selection[0];
-      }
-    }
-    return model;
   },
 
   /**
