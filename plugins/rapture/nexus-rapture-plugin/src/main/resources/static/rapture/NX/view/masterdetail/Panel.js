@@ -34,49 +34,55 @@ Ext.define('NX.view.masterdetail.Panel', {
    * @override
    */
   initComponent: function () {
-    var me = this;
+    var me = this,
+      items = [];
 
+    // Normalize list of masters
+    me.masters = Ext.isArray(me.masters) ? me.masters : [me.masters];
+
+    // Add masters
+    for (var i = 0; i < me.masters.length; ++i) {
+      items.push(
+        {
+          xtype: 'nx-drilldown-item',
+          layout: 'fit',
+          items: me.masters[i]
+        }
+      );
+    }
+
+    // Add details
+    items.push(
+      {
+        xtype: 'nx-drilldown-item',
+
+        layout: 'fit',
+
+        items: {
+          xtype: 'nx-masterdetail-tabs',
+          ui: 'masterdetail-tabs',
+          header: false,
+          plain: true,
+
+          layout: {
+            type: 'vbox',
+            align: 'stretch',
+            pack: 'start'
+          },
+          tabs: Ext.isArray(me.tabs) ? Ext.Array.clone(me.tabs) : Ext.apply({}, me.tabs),
+          tbar: Ext.isArray(me.actions) ? Ext.Array.clone(me.actions) : Ext.apply({}, me.actions)
+        }
+      }
+    );
+
+    // Initialize this component’s items
     me.items = [
       {
         xtype: 'container',
         items: [
           {
             xtype: 'nx-drilldown',
-
-            items: [
-              {
-                xtype: 'nx-drilldown-item',
-
-                itemName: me.rootName,
-                itemClass: me.rootClass,
-
-                layout: 'fit',
-
-                items: {
-                  xtype: me.list
-                }
-              },
-              {
-                xtype: 'nx-drilldown-item',
-
-                layout: 'fit',
-
-                items: {
-                  xtype: 'nx-masterdetail-tabs',
-                  ui: 'masterdetail-tabs',
-                  header: false,
-                  plain: true,
-
-                  layout: {
-                    type: 'vbox',
-                    align: 'stretch',
-                    pack: 'start'
-                  },
-                  tabs: Ext.isArray(me.tabs) ? Ext.Array.clone(me.tabs) : Ext.apply({}, me.tabs),
-                  tbar: Ext.isArray(me.actions) ? Ext.Array.clone(me.actions) : Ext.apply({}, me.actions)
-                }
-              }
-            ]
+            items: items
           }
         ]
       }

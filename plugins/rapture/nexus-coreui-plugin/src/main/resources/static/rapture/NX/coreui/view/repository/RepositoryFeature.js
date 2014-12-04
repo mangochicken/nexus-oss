@@ -21,7 +21,7 @@ Ext.define('NX.coreui.view.repository.RepositoryFeature', {
   extend: 'NX.view.masterdetail.Panel',
   alias: 'widget.nx-coreui-repository-feature',
 
-  list: 'nx-coreui-repository-list',
+  masters: { xtype: 'nx-coreui-repository-list' },
 
   iconName: 'repository-default',
 
