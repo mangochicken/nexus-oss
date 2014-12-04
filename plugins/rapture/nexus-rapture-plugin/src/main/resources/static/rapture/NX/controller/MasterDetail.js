@@ -80,10 +80,14 @@ Ext.define('NX.controller.MasterDetail', {
       };
       componentListener[me.list[i] + ' ^ nx-masterdetail-panel nx-masterdetail-tabs > tabpanel'] = {
         tabchange: function() {
-          var selected = me.getList().getSelectionModel().getSelection();
-          me.bookmark(selected.length === 1 ? selected[0] : null);
-          // TODO: implement activeSelection
-          //me.bookmark(me.activeSelection);
+          // Get the model for the last master
+          var segments = NX.Bookmarks.getBookmark().segments.slice(1),
+            lists = me.getLists(),
+            modelId = segments[lists.length - 1],
+            model = lists[lists.length - 1].getStore().getById(modelId);
+
+          // Bookmark it. The tab (if selected) will be added automatically
+          me.bookmark(model);
         }
       };
 
@@ -122,8 +126,10 @@ Ext.define('NX.controller.MasterDetail', {
       feature = me.getFeature(),
       lists = [];
 
-    for (var i = 0; i < me.list.length; ++i) {
-      lists.push(feature.down(me.list[i]));
+    if (feature) {
+      for (var i = 0; i < me.list.length; ++i) {
+        lists.push(feature.down(me.list[i]));
+      }
     }
 
     return lists;
@@ -227,7 +233,7 @@ Ext.define('NX.controller.MasterDetail', {
       if (list === lists[i].getView() && model) {
         lists[i].fireEvent("selection", list, model);
         me.onModelChanged(model);
-        feature.down('#nx-drilldown').setItemBookmark(0, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)), me);
+        feature.down('#nx-drilldown').setItemBookmark(i, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(i)), me);
 
         // Show the next view in line
         feature.down('#nx-drilldown').showChild(i + 1, animate);
@@ -291,23 +297,44 @@ Ext.define('NX.controller.MasterDetail', {
     var me = this,
         lists = me.getLists(),
         feature = me.getFeature(),
-        store, modelId, tabBookmark, model, tabs;
+        store, parent_ids, last_id, model, modelId, tabs, index;
 
     if (lists.length && bookmark) {
-      modelId = bookmark.getSegment(1);
-      tabBookmark = bookmark.getSegment(2);
-      if (modelId) {
-        modelId = decodeURIComponent(modelId);
-        me.logDebug('Navigate to: ' + modelId + (tabBookmark ? ":" + tabBookmark : ''));
-        store = lists[0].getStore();
-        model = store.getById(modelId);
-        if (model) {
-          me.loadView(lists[0].getView(), model, false);
-          lists[0].fireEvent('selectionchange', lists[0], [model]);
+
+      parent_ids = bookmark.segments.slice(1);
+      last_id = parent_ids.pop();
+
+      if (parent_ids.length || last_id) {
+        // Select rows in all parent lists
+        for (index = 0; index < parent_ids.length; ++index) {
+          modelId = decodeURIComponent(parent_ids[index]);
+
+          // Select rows
+          if (index < lists.length) {
+            store = lists[index].getStore();
+            model = store.getById(modelId);
+            if (model) {
+              lists[index].fireEvent("selection", lists[index], model);
+              me.onModelChanged(model);
+              feature.down('#nx-drilldown').setItemBookmark(index, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(index)), me);
+            }
+          }
         }
-        if (tabBookmark) {
-          feature.down('nx-masterdetail-tabs').setActiveTabByBookmark(tabBookmark);
+
+        // Show the last view
+        if (index < lists.length) {
+          // It’s a list, show the next view
+          modelId = decodeURIComponent(last_id);
+          me.loadView(lists[index].getView(), lists[index].getStore().getById(modelId), true);
+        } else {
+          // It’s a tab, select and show it
+          modelId = decodeURIComponent(parent_ids[parent_ids.length - 1]);
+          me.loadView(lists[lists.length - 1].getView(), lists[lists.length - 1].getStore().getById(modelId), true);
+          feature.down('nx-masterdetail-tabs').setActiveTabByBookmark(last_id);
         }
+
+        // TODO (update this)
+        //me.logDebug('Navigate to: ' + modelId + (tabBookmark ? ":" + tabBookmark : ''));
       }
       else {
         lists[0].getSelectionModel().deselectAll();
