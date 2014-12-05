@@ -269,6 +269,10 @@ Ext.define('NX.coreui.controller.Search', {
     me.getSearchResultStore().filter();
   },
 
+  getDescription: function(model) {
+    return model.getId();
+  },
+
   /**
    * @private
    * Add a criteria.
@@ -459,9 +463,6 @@ Ext.define('NX.coreui.controller.Search', {
       } else {
         icon = 'default';
       }
-      //storageFileContainer.up('#nx-drilldown').setItemClass(2, NX.Icons.cls('repository-item-type-' + icon, 'x16'));
-      //storageFileContainer.up('#nx-drilldown').setItemName(2, model.internalId);
-      //storageFileContainer.up('#nx-drilldown').showChild(2, true);
     }
     else {
       storageFileContainer.showStorageFile();
