@@ -52,28 +52,34 @@ Ext.define('NX.view.masterdetail.Panel', {
     }
 
     // Add details
-    items.push(
-      {
-        xtype: 'nx-drilldown-item',
+    if (me.detail) {
+      // Use a custom detail panel
+      items.push({ xtype: 'nx-drilldown-item', layout: 'fit', items: me.detail });
+    } else {
+      // Use the default tab panel
+      items.push(
+        {
+          xtype: 'nx-drilldown-item',
 
-        layout: 'fit',
+          layout: 'fit',
 
-        items: {
-          xtype: 'nx-masterdetail-tabs',
-          ui: 'masterdetail-tabs',
-          header: false,
-          plain: true,
+          items: {
+            xtype: 'nx-masterdetail-tabs',
+            ui: 'masterdetail-tabs',
+            header: false,
+            plain: true,
 
-          layout: {
-            type: 'vbox',
-            align: 'stretch',
-            pack: 'start'
-          },
-          tabs: Ext.isArray(me.tabs) ? Ext.Array.clone(me.tabs) : Ext.apply({}, me.tabs),
-          tbar: Ext.isArray(me.actions) ? Ext.Array.clone(me.actions) : Ext.apply({}, me.actions)
+            layout: {
+              type: 'vbox',
+              align: 'stretch',
+              pack: 'start'
+            },
+            tabs: Ext.isArray(me.tabs) ? Ext.Array.clone(me.tabs) : Ext.apply({}, me.tabs),
+            tbar: Ext.isArray(me.actions) ? Ext.Array.clone(me.actions) : Ext.apply({}, me.actions)
+          }
         }
-      }
-    );
+      );
+    }
 
     // Initialize this component’s items
     me.items = [
@@ -90,18 +96,18 @@ Ext.define('NX.view.masterdetail.Panel', {
 
     me.callParent(arguments);
 
-    if (Ext.isDefined(me.iconName)) {
-      me.setDescriptionIconName(me.iconName);
-    }
+    //if (Ext.isDefined(me.iconName)) {
+    //  me.setDescriptionIconName(me.iconName);
+    //}
   },
 
-  setDescription: function (description) {
-    this.down('nx-masterdetail-tabs').up('nx-drilldown-item').setItemName(description);
-  },
+  //setDescription: function (description) {
+  //  this.down('nx-masterdetail-tabs').up('nx-drilldown-item').setItemName(description);
+  //},
 
-  setDescriptionIconName: function (iconName) {
-    this.down('nx-masterdetail-tabs').up('nx-drilldown-item').setItemClass(NX.Icons.cls(iconName, 'x16'));
-  },
+  //setDescriptionIconName: function (iconName) {
+  //  this.down('nx-masterdetail-tabs').up('nx-drilldown-item').setItemClass(NX.Icons.cls(iconName, 'x16'));
+  //},
 
   showInfo: function (message) {
     this.down('nx-masterdetail-tabs').showInfo(message);
@@ -119,12 +125,28 @@ Ext.define('NX.view.masterdetail.Panel', {
     this.down('nx-masterdetail-tabs').clearWarning();
   },
 
+  /*
+   * Add a tab to the default detail panel
+   *
+   * Note: this will have no effect if a custom detail panel has been specified
+   */
   addTab: function (tab) {
-    this.down('nx-masterdetail-tabs').addTab(tab);
+    var me = this;
+    if (!me.detail) {
+      this.down('nx-masterdetail-tabs').addTab(tab);
+    }
   },
 
+  /*
+   * Remove a panel from the default detail panel
+   *
+   * Note: this will have no effect if a custom detail panel has been specified
+   */
   removeTab: function (tab) {
-    this.down('nx-masterdetail-tabs').removeTab(tab);
+    var me = this;
+    if (!me.detail) {
+      this.down('nx-masterdetail-tabs').removeTab(tab);
+    }
   }
 
 });

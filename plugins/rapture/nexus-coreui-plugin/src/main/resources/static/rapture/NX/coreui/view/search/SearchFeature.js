@@ -24,7 +24,7 @@ Ext.define('NX.coreui.view.search.SearchFeature', {
   // TODO: Needed?
   itemId: 'searchfeature',
 
-  iconName: 'search-default',
+  //iconName: 'search-default',
 
   masters: [
     {
@@ -96,7 +96,14 @@ Ext.define('NX.coreui.view.search.SearchFeature', {
     }
   ],
 
-  tabs: [
-    { xtype: 'nx-coreui-repositorybrowse-storagefilecontainer' }
-  ]
+  detail: {
+    xtype: 'nx-coreui-repositorybrowse-storagefilecontainer',
+    header: false,
+    plain: true,
+
+    style: {
+      'background-color': 'white',
+      'padding-top': '10px'
+    }
+  }
 });

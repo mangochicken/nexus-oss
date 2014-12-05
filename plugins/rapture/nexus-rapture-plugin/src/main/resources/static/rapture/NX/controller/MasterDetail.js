@@ -276,7 +276,7 @@ Ext.define('NX.controller.MasterDetail', {
       segments.push(encodeURIComponent(model.getId()));
 
       // Is this the last list model? And is a tab selected? If so, add it.
-      if (index == lists.length - 1) {
+      if (tabs && index == lists.length - 1) {
         selectedTabBookmark = tabs.getBookmarkOfSelectedTab();
         if (selectedTabBookmark) {
           segments.push(selectedTabBookmark);
