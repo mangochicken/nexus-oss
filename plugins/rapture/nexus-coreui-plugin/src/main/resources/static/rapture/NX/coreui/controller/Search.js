@@ -168,13 +168,6 @@ Ext.define('NX.coreui.controller.Search', {
   },
 
   /**
-   * @override
-   */
-  onSelection: function(list, model) {
-    console.log(list);
-  },
-
-  /**
    * @private
    * Show quick search when user has 'nexus:repositories:read' permission.
    */
@@ -373,25 +366,42 @@ Ext.define('NX.coreui.controller.Search', {
     }
 
     if (apply) {
-      me.onSearchResultCellClick(me.getSearchResult().getSelectionModel(), null, null, null);
+      me.onSearchResultSelection(null);
       me.bookmarkFilters();
+    }
+  },
+
+  /**
+   * @override
+   */
+  onSelection: function(list, model) {
+    var me = this,
+      listType;
+
+    // Figure out what kind of list we’re dealing with
+    listType = model.id.replace(/^.*?model\./, '').replace(/\-.*$/, '');
+
+    if (listType == "SearchResult") {
+      me.onSearchResultSelection(model);
+    } else if (listType == "SearchResultVersion") {
+      me.onSearchResultVersionSelection(model);
     }
   },
 
   /**
    * @private
    * Show details and load version of selected search result.
-   * @param selectionModel search result grid selection model
-   * @param record selected search result
+   * @param list search result grid selection model
+   * @param model selected search result
    */
-  onSearchResultCellClick: function(selectionModel, td, cellIndex, record) {
+  onSearchResultSelection: function(model) {
     var me = this,
-        searchResultModel = record,
+        searchResultModel = model,
         searchResultVersion = me.getSearchResultVersion(),
         searchResultDetails = me.getSearchResultDetails(),
         searchResultVersionStore = me.getSearchResultVersionStore();
 
-    me.onSearchResultVersionCellClick(me.getSearchResultVersion().getSelectionModel(), null, null, null);
+    me.onSearchResultVersionSelection(null);
 
     if (searchResultModel) {
       searchResultDetails.items.get(0).hide();
@@ -414,10 +424,6 @@ Ext.define('NX.coreui.controller.Search', {
           value: searchResultModel.get('artifactId')
         }
       ]);
-
-      // Show the component version panel
-      //searchResultDetails.up('#nx-drilldown').setItemName(1, record.internalId);
-      //searchResultDetails.up('#nx-drilldown').showChild(1, true);
     }
     else {
       searchResultDetails.items.get(0).show();
@@ -429,12 +435,12 @@ Ext.define('NX.coreui.controller.Search', {
   /**
    * @private
    * Show storage file of selected version of search result.
-   * @param selectionModel search result grid selection model
-   * @param record selected search result
+   * @param list search result grid selection model
+   * @param model selected search result
    */
-  onSearchResultVersionCellClick: function(selectionModel, td, cellIndex, record) {
+  onSearchResultVersionSelection: function(model) {
     var me = this,
-        searchResultVersionModel = record,
+        searchResultVersionModel = model,
         storageFileContainer = me.getStorageFileContainer();
 
     if (searchResultVersionModel) {
@@ -454,7 +460,7 @@ Ext.define('NX.coreui.controller.Search', {
         icon = 'default';
       }
       //storageFileContainer.up('#nx-drilldown').setItemClass(2, NX.Icons.cls('repository-item-type-' + icon, 'x16'));
-      //storageFileContainer.up('#nx-drilldown').setItemName(2, record.internalId);
+      //storageFileContainer.up('#nx-drilldown').setItemName(2, model.internalId);
       //storageFileContainer.up('#nx-drilldown').showChild(2, true);
     }
     else {
