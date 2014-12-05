@@ -183,8 +183,9 @@ Ext.define('NX.controller.MasterDetail', {
     var me = this,
         lists = me.getLists();
 
-    for (var i = 0; i < lists.length; ++i) {
-      lists[i].mon(lists[i].getStore(), 'load', me.onStoreLoad, me);
+    if (lists.length) {
+      // Accommodates filtering. Allows the data in the first list to load, then navigate
+      lists[0].mon(lists[0].getStore(), 'load', me.onStoreLoad, me);
     }
     me.loadStore();
   },
