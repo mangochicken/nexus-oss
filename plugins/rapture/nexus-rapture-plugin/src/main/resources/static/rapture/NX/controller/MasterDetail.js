@@ -25,7 +25,10 @@ Ext.define('NX.controller.MasterDetail', {
     'NX.view.info.Entry',
     'NX.Conditions',
     'NX.Dialogs',
-    'NX.Bookmarks'
+    'NX.Bookmarks',
+    'NX.view.drilldown.Drilldown',
+    'NX.view.drilldown.DrilldownItem',
+    'NX.view.drilldown.DrilldownLink'
   ],
   mixins: {
     logAware: 'NX.LogAware'
