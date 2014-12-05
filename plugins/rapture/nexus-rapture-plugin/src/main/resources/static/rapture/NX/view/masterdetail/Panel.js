@@ -96,18 +96,18 @@ Ext.define('NX.view.masterdetail.Panel', {
 
     me.callParent(arguments);
 
-    //if (Ext.isDefined(me.iconName)) {
-    //  me.setDescriptionIconName(me.iconName);
-    //}
+    if (Ext.isDefined(me.iconName)) {
+      me.setDefaultIconName(me.iconName);
+    }
   },
 
-  //setDescription: function (description) {
-  //  this.down('nx-masterdetail-tabs').up('nx-drilldown-item').setItemName(description);
-  //},
-
-  //setDescriptionIconName: function (iconName) {
-  //  this.down('nx-masterdetail-tabs').up('nx-drilldown-item').setItemClass(NX.Icons.cls(iconName, 'x16'));
-  //},
+  setDefaultIconName: function (iconName) {
+    var items = this.query('nx-drilldown-item');
+    console.log(iconName);
+    for (var i = 0; i < items.length; ++i) {
+      items[i].setItemClass(NX.Icons.cls(iconName) + (i === 0 ? '-x32' : '-x16'));
+    }
+  },
 
   showInfo: function (message) {
     this.down('nx-masterdetail-tabs').showInfo(message);

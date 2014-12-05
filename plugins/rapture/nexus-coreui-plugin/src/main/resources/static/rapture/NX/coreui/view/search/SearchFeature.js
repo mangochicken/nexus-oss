@@ -24,7 +24,7 @@ Ext.define('NX.coreui.view.search.SearchFeature', {
   // TODO: Needed?
   itemId: 'searchfeature',
 
-  //iconName: 'search-default',
+  iconName: 'search-default',
 
   masters: [
     {
