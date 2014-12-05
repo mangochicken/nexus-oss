@@ -244,11 +244,13 @@ Ext.define('NX.controller.Menu', {
 
     if (bookmark) {
       // Get the path (minus an optional filter string)
-      queryIndex = bookmark.getSegment(0).indexOf('=');
-      if (queryIndex != -1) {
-        menuBookmark = bookmark.getSegment(0).slice(0, bookmark.getSegment(0).indexOf('='));
-      } else {
-        menuBookmark = bookmark.getSegment(0);
+      if (bookmark.segments.length) {
+        queryIndex = bookmark.getSegment(0).indexOf('=');
+        if (queryIndex != -1) {
+          menuBookmark = bookmark.getSegment(0).slice(0, bookmark.getSegment(0).indexOf('='));
+        } else {
+          menuBookmark = bookmark.getSegment(0);
+        }
       }
 
       //<if debug>
