@@ -122,21 +122,10 @@ Ext.define('NX.coreui.controller.Feeds', {
    * @private
    */
   onSelection: function (list, model) {
-    this.onFeedChanged(model);
-  },
-
-  /**
-   * @private
-   * Show/Hide, reload feed entries.
-   * Bookmark selected entry.
-   *
-   * @param {NX.coreui.model.Feed} feedModel selected model
-   */
-  onFeedChanged: function (feedModel) {
     var me = this;
 
-    if (feedModel) {
-      me.getFeedEntryStore().filter({ id: 'key', property: 'key', value: feedModel.get('key') });
+    if (model) {
+      me.getFeedEntryStore().filter({ id: 'key', property: 'key', value: model.get('key') });
     }
   },
 
