@@ -103,7 +103,6 @@ Ext.define('NX.view.masterdetail.Panel', {
 
   setDefaultIconName: function (iconName) {
     var items = this.query('nx-drilldown-item');
-    console.log(iconName);
     for (var i = 0; i < items.length; ++i) {
       items[i].setItemClass(NX.Icons.cls(iconName) + (i === 0 ? '-x32' : '-x16'));
     }

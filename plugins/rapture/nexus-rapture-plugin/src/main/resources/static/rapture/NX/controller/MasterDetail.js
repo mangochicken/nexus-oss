@@ -232,7 +232,7 @@ Ext.define('NX.controller.MasterDetail', {
       if (list === lists[i].getView() && model) {
         lists[i].fireEvent("selection", list, model);
         me.onModelChanged(model);
-        feature.down('#nx-drilldown').setItemBookmark(i, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(i)), me);
+        feature.down('#nx-drilldown').setItemBookmark(i, NX.Bookmarks.getBookmark(), me);
 
         // Show the next view in line
         feature.down('#nx-drilldown').showChild(i + 1, animate);
@@ -315,7 +315,7 @@ Ext.define('NX.controller.MasterDetail', {
             if (model) {
               lists[index].fireEvent("selection", lists[index], model);
               me.onModelChanged(model);
-              feature.down('#nx-drilldown').setItemBookmark(index, NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(index)), me);
+              feature.down('#nx-drilldown').setItemBookmark(index, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, index)), me);
             }
           }
         }
