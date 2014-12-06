@@ -18,7 +18,7 @@
  * @since 3.0
  */
 
-Ext.define('NX.view.drilldown.DrilldownItem', {
+Ext.define('NX.view.drilldown.Item', {
   extend: 'Ext.panel.Panel',
   alias: 'widget.nx-drilldown-item',
 
@@ -26,27 +26,18 @@ Ext.define('NX.view.drilldown.DrilldownItem', {
   itemClass: null,
   itemBookmark: null,
 
-  /**
-   * @override
-   */
-  initComponent: function () {
-    var me = this;
+  setItemName: function(text) {
+    this.itemName = text;
+  },
 
-    me.setItemName = function(text) {
-      this.itemName = text;
-    }
+  setItemClass: function(cls) {
+    this.itemClass = cls;
+  },
 
-    me.setItemClass = function(cls) {
-      this.itemClass = cls;
-    }
-
-    me.setItemBookmark = function(bookmark, scope) {
-      this.itemBookmark = {
-        obj: bookmark,
-        scope: scope
-      };
-    }
-
-    me.callParent(arguments);
+  setItemBookmark: function(bookmark, scope) {
+    this.itemBookmark = {
+      obj: bookmark,
+      scope: scope
+    };
   }
 });

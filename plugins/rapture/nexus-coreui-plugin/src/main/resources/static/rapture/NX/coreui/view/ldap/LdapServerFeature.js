@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.ldap.LdapServerFeature', {
-  extend: 'NX.view.masterdetail.Panel',
+  extend: 'NX.view.drilldown.Panel',
   alias: 'widget.nx-coreui-ldapserver-feature',
 
   list: 'nx-coreui-ldapserver-list',

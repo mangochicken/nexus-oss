@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.controller.Repositories', {
-  extend: 'NX.controller.MasterDetail',
+  extend: 'NX.controller.Drilldown',
   requires: [
     'Ext.direct.Manager',
     'NX.util.Url',

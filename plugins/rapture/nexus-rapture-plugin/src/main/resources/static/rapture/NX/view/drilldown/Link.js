@@ -18,7 +18,7 @@
  * @since 3.0
  */
 
-Ext.define('NX.view.drilldown.DrilldownLink', {
+Ext.define('NX.view.drilldown.Link', {
   extend: 'Ext.button.Button',
   alias: 'widget.nx-drilldown-link',
   ui: 'drilldown',

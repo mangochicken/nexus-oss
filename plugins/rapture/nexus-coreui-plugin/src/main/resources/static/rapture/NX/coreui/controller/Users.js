@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.controller.Users', {
-  extend: 'NX.controller.MasterDetail',
+  extend: 'NX.controller.Drilldown',
   requires: [
     'NX.Conditions',
     'NX.State',

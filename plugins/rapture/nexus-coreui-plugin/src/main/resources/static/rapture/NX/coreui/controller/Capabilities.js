@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.controller.Capabilities', {
-  extend: 'NX.controller.MasterDetail',
+  extend: 'NX.controller.Drilldown',
   requires: [
     'NX.Conditions',
     'NX.Dialogs',
@@ -187,13 +187,13 @@ Ext.define('NX.coreui.controller.Capabilities', {
    * @param {NX.coreui.model.Capability} model capability model
    */
   eventuallyShowWarning: function(model) {
-    var masterdetail = this.getList().up('nx-masterdetail-panel');
+    var drilldown = this.getList().up('nx-drilldown');
 
     if (model.get('enabled') && !model.get('active')) {
-      masterdetail.showWarning(model.get('stateDescription'));
+      drilldown.showWarning(model.get('stateDescription'));
     }
     else {
-      masterdetail.clearWarning();
+      drilldown.clearWarning();
     }
   },
 

@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.user.UserFeature', {
-  extend: 'NX.view.masterdetail.Panel',
+  extend: 'NX.view.drilldown.Panel',
   alias: 'widget.nx-coreui-user-feature',
 
   list: 'nx-coreui-user-list',

@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.role.RoleFeature', {
-  extend: 'NX.view.masterdetail.Panel',
+  extend: 'NX.view.drilldown.Panel',
   alias: 'widget.nx-coreui-role-feature',
 
   list: 'nx-coreui-role-list',

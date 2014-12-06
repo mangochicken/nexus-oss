@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.capability.CapabilityFeature', {
-  extend: 'NX.view.masterdetail.Panel',
+  extend: 'NX.view.drilldown.Panel',
   alias: 'widget.nx-coreui-capability-feature',
 
   list: 'nx-coreui-capability-list',

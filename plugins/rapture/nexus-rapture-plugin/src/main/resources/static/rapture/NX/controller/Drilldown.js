@@ -17,7 +17,7 @@
  *
  * @since 3.0
  */
-Ext.define('NX.controller.MasterDetail', {
+Ext.define('NX.controller.Drilldown', {
   extend: 'Ext.app.Controller',
   requires: [
     // many impls use this
@@ -26,17 +26,17 @@ Ext.define('NX.controller.MasterDetail', {
     'NX.Conditions',
     'NX.Dialogs',
     'NX.Bookmarks',
-    'NX.view.drilldown.Drilldown',
-    'NX.view.drilldown.DrilldownItem',
-    'NX.view.drilldown.DrilldownLink'
+    'NX.view.drilldown.Panel',
+    'NX.view.drilldown.Item',
+    'NX.view.drilldown.Link'
   ],
   mixins: {
     logAware: 'NX.LogAware'
   },
 
   views: [
-    'masterdetail.Panel',
-    'masterdetail.Tabs'
+    'drilldown.Panel',
+    'drilldown.Details'
   ],
 
   permission: undefined,
@@ -81,7 +81,7 @@ Ext.define('NX.controller.MasterDetail', {
       componentListener[me.list[i] + ' button[action=new]'] = {
         afterrender: me.bindNewButton
       };
-      componentListener[me.list[i] + ' ^ nx-masterdetail-panel nx-masterdetail-tabs > tabpanel'] = {
+      componentListener[me.list[i] + ' ^ nx-drilldown-panel nx-drilldown-details > tabpanel'] = {
         tabchange: function() {
           // Get the model for the last master
           var segments = NX.Bookmarks.getBookmark().segments.slice(1),
@@ -96,7 +96,7 @@ Ext.define('NX.controller.MasterDetail', {
 
       // bind to a delete button if delete function defined
       if (me.deleteModel) {
-        componentListener[me.list[i] + ' ^ nx-masterdetail-panel nx-masterdetail-tabs button[action=delete]'] = {
+        componentListener[me.list[i] + ' ^ nx-drilldown-panel nx-drilldown-details button[action=delete]'] = {
           afterrender: me.bindDeleteButton,
           click: me.onDelete
         };
@@ -248,7 +248,7 @@ Ext.define('NX.controller.MasterDetail', {
     var me = this,
         lists = me.getLists(),
         feature = me.getFeature(),
-        tabs = feature.down('nx-masterdetail-tabs'),
+        tabs = feature.down('nx-drilldown-details'),
         bookmark = NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)),
         segments = [],
         selected,
@@ -329,7 +329,7 @@ Ext.define('NX.controller.MasterDetail', {
           // It’s a tab, select and show it
           modelId = decodeURIComponent(parent_ids[parent_ids.length - 1]);
           me.loadView(lists[lists.length - 1].getView(), lists[lists.length - 1].getStore().getById(modelId), false);
-          feature.down('nx-masterdetail-tabs').setActiveTabByBookmark(last_id);
+          feature.down('nx-drilldown-details').setActiveTabByBookmark(last_id);
         }
 
         // TODO (update this)

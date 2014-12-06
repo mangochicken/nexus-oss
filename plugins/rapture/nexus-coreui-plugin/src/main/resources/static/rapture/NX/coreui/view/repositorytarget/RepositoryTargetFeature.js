@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.repositorytarget.RepositoryTargetFeature', {
-  extend: 'NX.view.masterdetail.Panel',
+  extend: 'NX.view.drilldown.Panel',
   alias: 'widget.nx-coreui-repositorytarget-feature',
 
   list: 'nx-coreui-repositorytarget-list',
