@@ -105,5 +105,15 @@ Ext.define('NX.coreui.view.search.SearchFeature', {
       'background-color': 'white',
       'padding-top': '10px'
     }
+  },
+
+  initComponent: function() {
+    var me = this;
+
+    me.callParent(arguments);
+
+    // Set default icon for the component version list
+    var item = me.down('nx-coreui-search-result-version-list').up('nx-drilldown-item');
+    item.setItemClass('nx-icon-search-component-detail-x16');
   }
 });

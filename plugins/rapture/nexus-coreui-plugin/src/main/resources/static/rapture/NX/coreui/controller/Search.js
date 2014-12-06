@@ -455,7 +455,7 @@ Ext.define('NX.coreui.controller.Search', {
       );
       storageFileContainer.expand();
 
-      // Show the version detail panel
+      // Set the appropriate breadcrumb icon
       var icon;
       var type = searchResultVersionModel.get('type');
       if (NX.getApplication().getIconController().findIcon('repository-item-type-' + type, 'x16')) {
@@ -463,6 +463,7 @@ Ext.define('NX.coreui.controller.Search', {
       } else {
         icon = 'default';
       }
+      storageFileContainer.up('#nx-drilldown').setItemClass(2, NX.Icons.cls('repository-item-type-' + icon, 'x16'));
     }
     else {
       storageFileContainer.showStorageFile();
