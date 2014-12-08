@@ -128,8 +128,10 @@ Ext.define('NX.controller.Drilldown', {
       feature = me.getFeature(),
       lists = [];
 
-    for (var i = 0; i < me.list.length; ++i) {
-      lists.push(feature.down(me.list[i]));
+    if (feature) {
+      for (var i = 0; i < me.list.length; ++i) {
+        lists.push(feature.down(me.list[i]));
+      }
     }
 
     return lists;
