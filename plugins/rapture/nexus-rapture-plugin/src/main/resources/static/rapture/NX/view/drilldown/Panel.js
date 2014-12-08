@@ -120,8 +120,9 @@ Ext.define('NX.view.drilldown.Panel', {
           cls: content.currentIconCls
         },
         {
-          xtype: 'nx-drilldown-link',
+          xtype: 'button',
           scale: 'large',
+          ui: 'drilldown',
           text: content.currentTitle,
           handler: function() {
             me.showChild(0, true);
@@ -154,7 +155,9 @@ Ext.define('NX.view.drilldown.Panel', {
           // Create a closure within a closure to decouple 'i' from the current context
           (function(j) {
             return {
-              xtype: 'nx-drilldown-link',
+              xtype: 'button',
+              scale: 'medium',
+              ui: 'drilldown',
               disabled: (i == me.currentIndex ? true : false), // Disabled if it’s the last item in the breadcrumb
               text: me.items.items[j].itemName,
               handler: function() {

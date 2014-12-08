@@ -109,6 +109,26 @@ Ext.define('NX.view.drilldown.Drilldown', {
     }
   },
 
+  showChild: function (index, animate) {
+    var me = this;
+    me.down('nx-drilldown').showChild(index, animate);
+  },
+
+  setItemName: function (index, text) {
+    var me = this;
+    me.query('nx-drilldown-item')[index].setItemName(text);
+  },
+
+  setItemClass: function (index, cls) {
+    var me = this;
+    me.query('nx-drilldown-item')[index].setItemClass(cls);
+  },
+
+  setItemBookmark: function (index, bookmark, scope) {
+    var me = this;
+    me.query('nx-drilldown-item')[index].setItemBookmark(bookmark, scope);
+  },
+
   showInfo: function (message) {
     this.down('nx-drilldown-details').showInfo(message);
   },
@@ -147,25 +167,5 @@ Ext.define('NX.view.drilldown.Drilldown', {
     if (!me.detail) {
       this.down('nx-drilldown-details').removeTab(tab);
     }
-  },
-
-  showChild: function (index, animate) {
-    var me = this;
-    me.down('nx-drilldown').showChild(index, animate);
-  },
-
-  setItemName: function (index, text) {
-    var me = this;
-    me.query('nx-drilldown-item')[index].setItemName(text);
-  },
-
-  setItemClass: function (index, cls) {
-    var me = this;
-    me.query('nx-drilldown-item')[index].setItemClass(cls);
-  },
-
-  setItemBookmark: function (index, bookmark, scope) {
-    var me = this;
-    me.query('nx-drilldown-item')[index].setItemBookmark(bookmark, scope);
   }
 });
