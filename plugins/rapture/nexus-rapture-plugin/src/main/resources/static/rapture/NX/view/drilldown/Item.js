@@ -26,6 +26,8 @@ Ext.define('NX.view.drilldown.Item', {
   itemClass: null,
   itemBookmark: null,
 
+  layout: 'fit',
+
   setItemName: function(text) {
     this.itemName = text;
   },

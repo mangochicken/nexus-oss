@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.search.SearchFeature', {
-  extend: 'NX.view.drilldown.Panel',
+  extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-searchfeature',
 
   // TODO: Needed?

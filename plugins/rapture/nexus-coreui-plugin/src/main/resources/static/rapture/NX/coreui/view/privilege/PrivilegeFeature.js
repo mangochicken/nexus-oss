@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.privilege.PrivilegeFeature', {
-  extend: 'NX.view.drilldown.Panel',
+  extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-privilege-feature',
 
   list: 'nx-coreui-privilege-list',

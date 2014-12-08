@@ -26,7 +26,7 @@ Ext.define('NX.controller.Drilldown', {
     'NX.Conditions',
     'NX.Dialogs',
     'NX.Bookmarks',
-    'NX.view.drilldown.Panel',
+    'NX.view.drilldown.Drilldown',
     'NX.view.drilldown.Item',
     'NX.view.drilldown.Link'
   ],
@@ -35,7 +35,7 @@ Ext.define('NX.controller.Drilldown', {
   },
 
   views: [
-    'drilldown.Panel',
+    'drilldown.Drilldown',
     'drilldown.Details'
   ],
 

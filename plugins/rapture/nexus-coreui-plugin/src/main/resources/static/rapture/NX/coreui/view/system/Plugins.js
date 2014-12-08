@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.system.Plugins', {
-  extend: 'NX.view.drilldown.Panel',
+  extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-system-plugins',
 
   list: 'nx-coreui-system-pluginlist',

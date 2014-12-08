@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.repositoryroute.RepositoryRouteFeature', {
-  extend: 'NX.view.drilldown.Panel',
+  extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-repositoryroute-feature',
 
   list: 'nx-coreui-repositoryroute-list',

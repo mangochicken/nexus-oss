@@ -18,7 +18,7 @@
  * @since 3.0
  */
 Ext.define('NX.coreui.view.feed.FeedFeature', {
-  extend: 'NX.view.drilldown.Panel',
+  extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-feed-feature',
 
   list: 'nx-coreui-feed-list',
