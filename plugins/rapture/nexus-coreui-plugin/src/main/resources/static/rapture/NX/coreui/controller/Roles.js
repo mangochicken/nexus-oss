@@ -44,22 +44,11 @@ Ext.define('NX.coreui.controller.Roles', {
     'role.RoleTree'
   ],
   refs: [
-    {
-      ref: 'list',
-      selector: 'nx-coreui-role-list'
-    },
-    {
-      ref: 'settings',
-      selector: 'nx-coreui-role-feature nx-coreui-role-settings'
-    },
-    {
-      ref: 'privilegeTrace',
-      selector: 'nx-coreui-role-feature nx-coreui-privilege-trace'
-    },
-    {
-      ref: 'roleTree',
-      selector: 'nx-coreui-role-feature nx-coreui-role-tree'
-    }
+    { ref: 'feature', selector: 'nx-coreui-role-feature' },
+    { ref: 'list', selector: 'nx-coreui-role-list' },
+    { ref: 'settings', selector: 'nx-coreui-role-feature nx-coreui-role-settings' },
+    { ref: 'privilegeTrace', selector: 'nx-coreui-role-feature nx-coreui-privilege-trace' },
+    { ref: 'roleTree', selector: 'nx-coreui-role-feature nx-coreui-role-tree' }
   ],
   icons: {
     'role-default': {

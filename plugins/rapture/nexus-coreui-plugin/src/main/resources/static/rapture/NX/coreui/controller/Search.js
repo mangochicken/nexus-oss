@@ -463,7 +463,7 @@ Ext.define('NX.coreui.controller.Search', {
       } else {
         icon = 'default';
       }
-      storageFileContainer.up('#nx-drilldown').setItemClass(2, NX.Icons.cls('repository-item-type-' + icon, 'x16'));
+      storageFileContainer.up('nx-drilldown-item').setItemClass(NX.Icons.cls('repository-item-type-' + icon, 'x16'));
     }
     else {
       storageFileContainer.showStorageFile();

@@ -59,8 +59,8 @@ Ext.define('NX.coreui.controller.Repositories', {
     'repository.RepositorySettingsVirtualForm'
   ],
   refs: [
-    { ref: 'list', selector: 'nx-coreui-repository-list' },
     { ref: 'feature', selector: 'nx-coreui-repository-feature' },
+    { ref: 'list', selector: 'nx-coreui-repository-list' },
     { ref: 'settings', selector: 'nx-coreui-repository-settings' },
     { ref: 'selectTemplate', selector: 'nx-coreui-repository-selecttemplate' }
   ],

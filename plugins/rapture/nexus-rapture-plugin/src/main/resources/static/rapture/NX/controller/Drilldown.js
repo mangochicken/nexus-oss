@@ -28,7 +28,6 @@ Ext.define('NX.controller.Drilldown', {
     'NX.Bookmarks',
     'NX.view.drilldown.Drilldown',
     'NX.view.drilldown.Item',
-    'NX.view.drilldown.Link'
   ],
   mixins: {
     logAware: 'NX.LogAware'

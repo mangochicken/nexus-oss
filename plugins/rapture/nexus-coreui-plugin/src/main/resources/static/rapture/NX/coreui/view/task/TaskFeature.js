@@ -21,9 +21,9 @@ Ext.define('NX.coreui.view.task.TaskFeature', {
   extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-task-feature',
 
-  list: 'nx-coreui-task-list',
-
   iconName: 'task-default',
+
+  masters: { xtype: 'nx-coreui-task-list' },
 
   tabs: [
     { xtype: 'nx-info-panel', weight: 10 }

@@ -21,9 +21,9 @@ Ext.define('NX.coreui.view.ldap.LdapServerFeature', {
   extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-ldapserver-feature',
 
-  list: 'nx-coreui-ldapserver-list',
-
   iconName: 'ldapserver-default',
+
+  masters: { xtype: 'nx-coreui-ldapserver-list' },
 
   tabs: [
     { xtype: 'nx-coreui-ldapserver-connection', title: 'Connection', weight: 10 },

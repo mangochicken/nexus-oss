@@ -21,9 +21,9 @@ Ext.define('NX.coreui.view.ssl.SslCertificateFeature', {
   extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-sslcertificate-feature',
 
-  list: 'nx-coreui-sslcertificate-list',
-
   iconName: 'sslcertificate-default',
+
+  masters: { xtype: 'nx-coreui-sslcertificate-list' },
 
   tabs: { xtype: 'nx-coreui-sslcertificate-details' },
 

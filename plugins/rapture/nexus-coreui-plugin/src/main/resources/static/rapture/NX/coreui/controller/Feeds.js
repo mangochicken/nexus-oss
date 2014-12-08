@@ -44,14 +44,9 @@ Ext.define('NX.coreui.controller.Feeds', {
   ],
 
   refs: [
-    {
-      ref: 'list',
-      selector: 'nx-coreui-feed-list'
-    },
-    {
-      ref: 'entryList',
-      selector: 'nx-coreui-feedentry-list'
-    }
+    { ref: 'feature', selector: 'nx-coreui-feed-feature' },
+    { ref: 'list', selector: 'nx-coreui-feed-list' },
+    { ref: 'entryList', selector: 'nx-coreui-feedentry-list' }
   ],
 
   /**

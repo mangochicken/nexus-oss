@@ -39,17 +39,12 @@ Ext.define('NX.coreui.controller.RepositoryRoutes', {
     'repositoryroute.RepositoryRouteFeature',
     'repositoryroute.RepositoryRouteList',
     'repositoryroute.RepositoryRouteSettings',
-    'repositoryroute.RepositoryRouteSettingsForm',
+    'repositoryroute.RepositoryRouteSettingsForm'
   ],
   refs: [
-    {
-      ref: 'list',
-      selector: 'nx-coreui-repositoryroute-list'
-    },
-    {
-      ref: 'settings',
-      selector: 'nx-coreui-repositoryroute-feature nx-coreui-repositoryroute-settings'
-    }
+    { ref: 'feature', selector: 'nx-coreui-repositoryroute-feature' },
+    { ref: 'list', selector: 'nx-coreui-repositoryroute-list' },
+    { ref: 'settings', selector: 'nx-coreui-repositoryroute-feature nx-coreui-repositoryroute-settings' }
   ],
   icons: {
     'repositoryroute-default': {

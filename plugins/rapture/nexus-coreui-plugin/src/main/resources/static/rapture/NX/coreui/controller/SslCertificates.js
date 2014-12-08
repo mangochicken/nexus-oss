@@ -41,14 +41,9 @@ Ext.define('NX.coreui.controller.SslCertificates', {
     'ssl.SslCertificateList'
   ],
   refs: [
-    {
-      ref: 'list',
-      selector: 'nx-coreui-sslcertificate-list'
-    },
-    {
-      ref: 'details',
-      selector: 'nx-coreui-sslcertificate-feature nx-coreui-sslcertificate-details'
-    }
+    { ref: 'feature', selector: 'nx-coreui-sslcertificate-feature' },
+    { ref: 'list', selector: 'nx-coreui-sslcertificate-list' },
+    { ref: 'details', selector: 'nx-coreui-sslcertificate-feature nx-coreui-sslcertificate-details' }
   ],
   icons: {
     'sslcertificate-default': {

@@ -34,14 +34,9 @@ Ext.define('NX.coreui.controller.PluginConsole', {
     'system.PluginList'
   ],
   refs: [
-    {
-      ref: 'list',
-      selector: 'nx-coreui-system-pluginlist'
-    },
-    {
-      ref: 'info',
-      selector: 'nx-coreui-system-plugins nx-info-panel'
-    }
+    { ref: 'feature', selector: 'nx-coreui-system-plugins' },
+    { ref: 'list', selector: 'nx-coreui-system-pluginlist' },
+    { ref: 'info', selector: 'nx-coreui-system-plugins nx-info-panel' }
   ],
 
   features: {

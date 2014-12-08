@@ -42,14 +42,9 @@ Ext.define('NX.coreui.controller.RepositoryTargets', {
     'repositorytarget.RepositoryTargetSettingsForm',
   ],
   refs: [
-    {
-      ref: 'list',
-      selector: 'nx-coreui-repositorytarget-list'
-    },
-    {
-      ref: 'settings',
-      selector: 'nx-coreui-repositorytarget-feature nx-coreui-repositorytarget-settings'
-    }
+    { ref: 'feature', selector: 'nx-coreui-repositorytarget-feature' },
+    { ref: 'list', selector: 'nx-coreui-repositorytarget-list' },
+    { ref: 'settings', selector: 'nx-coreui-repositorytarget-feature nx-coreui-repositorytarget-settings' }
   ],
   icons: {
     'target-default': {

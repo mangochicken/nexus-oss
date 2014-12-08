@@ -21,9 +21,9 @@ Ext.define('NX.coreui.view.feed.FeedFeature', {
   extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-feed-feature',
 
-  list: 'nx-coreui-feed-list',
-
   iconName: 'feed-default',
+
+  masters: { xtype: 'nx-coreui-feed-list' },
 
   tabs: [
     { xtype: 'nx-coreui-feedentry-list', title: 'Events', weight: 10 }

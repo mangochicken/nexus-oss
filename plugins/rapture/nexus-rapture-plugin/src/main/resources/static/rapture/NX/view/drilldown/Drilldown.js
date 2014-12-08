@@ -19,9 +19,12 @@
  */
 Ext.define('NX.view.drilldown.Drilldown', {
   extend: 'Ext.panel.Panel',
+  alias: 'widget.nx-drilldown',
+  itemId: 'nx-drilldown',
 
   requires: [
-    'NX.Icons'
+    'NX.Icons',
+    'NX.view.drilldown.Panel'
   ],
 
   layout: 'fit',
@@ -87,7 +90,7 @@ Ext.define('NX.view.drilldown.Drilldown', {
         xtype: 'container',
         items: [
           {
-            xtype: 'nx-drilldown',
+            xtype: 'nx-drilldown-panel',
 
             items: items
           }
@@ -111,7 +114,7 @@ Ext.define('NX.view.drilldown.Drilldown', {
 
   showChild: function (index, animate) {
     var me = this;
-    me.down('nx-drilldown').showChild(index, animate);
+    me.down('nx-drilldown-panel').showChild(index, animate);
   },
 
   setItemName: function (index, text) {

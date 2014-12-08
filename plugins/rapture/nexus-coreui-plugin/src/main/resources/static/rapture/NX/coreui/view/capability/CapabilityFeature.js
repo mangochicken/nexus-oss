@@ -21,9 +21,9 @@ Ext.define('NX.coreui.view.capability.CapabilityFeature', {
   extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-capability-feature',
 
-  list: 'nx-coreui-capability-list',
-
   iconName: 'capability-default',
+
+  masters: { xtype: 'nx-coreui-capability-list' },
 
   tabs: [
     { xtype: 'nx-coreui-capability-summary', weight: 10 },

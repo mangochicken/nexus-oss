@@ -19,8 +19,8 @@
  */
 Ext.define('NX.view.drilldown.Panel', {
   extend: 'Ext.container.Container',
-  alias: 'widget.nx-drilldown',
-  itemId: 'nx-drilldown',
+  alias: 'widget.nx-drilldown-panel',
+  itemId: 'nx-drilldown-panel',
 
   layout: {
     type: 'hbox',

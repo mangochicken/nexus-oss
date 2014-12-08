@@ -37,18 +37,9 @@ Ext.define('NX.coreui.controller.Privileges', {
     'privilege.PrivilegeTrace'
   ],
   refs: [
-    {
-      ref: 'feature',
-      selector: 'nx-coreui-privilege-feature'
-    },
-    {
-      ref: 'list',
-      selector: 'nx-coreui-privilege-list'
-    },
-    {
-      ref: 'info',
-      selector: 'nx-coreui-privilege-feature nx-info-panel'
-    }
+    { ref: 'feature', selector: 'nx-coreui-privilege-feature' },
+    { ref: 'list', selector: 'nx-coreui-privilege-list' },
+    { ref: 'info', selector: 'nx-coreui-privilege-feature nx-info-panel' }
   ],
   icons: {
     'privilege-default': {
@@ -116,7 +107,7 @@ Ext.define('NX.coreui.controller.Privileges', {
         info;
 
     if (Ext.isDefined(model)) {
-      me.getFeature().setDescriptionIconName('privilege-' + model.get('type'));
+      me.getFeature().setItemClass(1, NX.Icons.cls('privilege-' + model.get('type'), 'x16'));
       info = {
         'Id': model.getId(),
         'Name': model.get('name'),

@@ -21,9 +21,9 @@ Ext.define('NX.coreui.view.repositoryroute.RepositoryRouteFeature', {
   extend: 'NX.view.drilldown.Drilldown',
   alias: 'widget.nx-coreui-repositoryroute-feature',
 
-  list: 'nx-coreui-repositoryroute-list',
-
   iconName: 'repositoryroute-default',
+
+  masters: { xtype: 'nx-coreui-repositoryroute-list' },
 
   tabs: { xtype: 'nx-coreui-repositoryroute-settings' },
 
