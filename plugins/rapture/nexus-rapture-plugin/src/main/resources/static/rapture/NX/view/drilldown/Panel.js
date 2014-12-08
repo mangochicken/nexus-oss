@@ -91,18 +91,9 @@ Ext.define('NX.view.drilldown.Panel', {
     }
 
     // Initialize this component’s items
-    me.items = [
-      {
-        xtype: 'container',
-        items: [
-          {
-            xtype: 'nx-drilldown',
-            items: items
-          }
-        ]
-      }
-    ];
+    me.items = items;
 
+    // TODO: Is this necessary? It results in a stack overflow when uncommented.
     me.callParent(arguments);
 
     if (Ext.isDefined(me.iconName)) {

@@ -207,7 +207,7 @@ Ext.define('NX.controller.Drilldown', {
       for (var i = 0; i < lists.length; ++i) {
         if (lists[i].getView().getNode(model)) {
           lists[i].getView().focusRow(model);
-          feature.down('nx-drilldown').setItemName(i + 1, me.getDescription(model));
+          feature.setItemName(i + 1, me.getDescription(model));
           break;
         }
       }
@@ -224,7 +224,7 @@ Ext.define('NX.controller.Drilldown', {
 
     // No model specified, go to the root view
     if (!model) {
-      feature.down('#nx-drilldown').showChild(0, animate);
+      feature.showChild(0, animate);
     }
 
     // Model specified, find the associated list and show that
@@ -232,10 +232,10 @@ Ext.define('NX.controller.Drilldown', {
       if (list === lists[i].getView() && model) {
         lists[i].fireEvent("selection", list, model);
         me.onModelChanged(model);
-        feature.down('#nx-drilldown').setItemBookmark(i, NX.Bookmarks.getBookmark(), me);
+        feature.setItemBookmark(i, NX.Bookmarks.getBookmark(), me);
 
         // Show the next view in line
-        feature.down('#nx-drilldown').showChild(i + 1, animate);
+        feature.showChild(i + 1, animate);
         break;
       }
     }
@@ -315,7 +315,7 @@ Ext.define('NX.controller.Drilldown', {
             if (model) {
               lists[index].fireEvent("selection", lists[index], model);
               me.onModelChanged(model);
-              feature.down('#nx-drilldown').setItemBookmark(index, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, index)), me);
+              feature.setItemBookmark(index, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, index)), me);
             }
           }
         }
