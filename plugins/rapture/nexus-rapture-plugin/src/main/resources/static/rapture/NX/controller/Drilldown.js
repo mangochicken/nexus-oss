@@ -152,6 +152,7 @@ Ext.define('NX.controller.Drilldown', {
         lists = me.getLists();
 
     for (var i = 0; i < lists.length; ++i) {
+      lists[i].getStore().clearFilter();
       lists[i].getStore().load();
     }
   },
