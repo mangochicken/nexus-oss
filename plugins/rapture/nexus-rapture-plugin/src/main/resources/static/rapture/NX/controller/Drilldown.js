@@ -27,7 +27,7 @@ Ext.define('NX.controller.Drilldown', {
     'NX.Dialogs',
     'NX.Bookmarks',
     'NX.view.drilldown.Drilldown',
-    'NX.view.drilldown.Item',
+    'NX.view.drilldown.Item'
   ],
   mixins: {
     logAware: 'NX.LogAware'
@@ -155,7 +155,9 @@ Ext.define('NX.controller.Drilldown', {
 
   onStoreLoad: function () {
     var me = this,
-        lists = me.getLists();
+      lists = me.getLists();
+
+    console.log("onStoreLoad()");
 
     if (lists.length) {
       me.navigateTo(NX.Bookmarks.getBookmark());
@@ -301,10 +303,12 @@ Ext.define('NX.controller.Drilldown', {
 
     if (lists.length && bookmark) {
 
+      me.logDebug('Navigate to: ' + bookmark.segments.join(':'));
       parent_ids = bookmark.segments.slice(1);
       last_id = parent_ids.pop();
 
       if (parent_ids.length || last_id) {
+
         // Select rows in all parent lists
         for (index = 0; index < parent_ids.length; ++index) {
           modelId = decodeURIComponent(parent_ids[index]);
@@ -332,9 +336,6 @@ Ext.define('NX.controller.Drilldown', {
           me.loadView(lists[lists.length - 1].getView(), lists[lists.length - 1].getStore().getById(modelId), false);
           feature.down('nx-drilldown-details').setActiveTabByBookmark(last_id);
         }
-
-        // TODO (update this)
-        //me.logDebug('Navigate to: ' + modelId + (tabBookmark ? ":" + tabBookmark : ''));
       }
       else {
         lists[0].getSelectionModel().deselectAll();

@@ -146,12 +146,6 @@ Ext.define('NX.coreui.controller.Search', {
           searchcleared: me.onSearchCriteriaChange,
           criteriaremoved: me.removeCriteria
         },
-        'nx-coreui-search-result-list': {
-          //cellclick: me.onSearchResultCellClick
-        },
-        'nx-coreui-search-result-version-list': {
-          //cellclick: me.onSearchResultVersionCellClick
-        },
         'nx-searchfeature button[action=save]': {
           click: me.showSaveSearchFilterWindow
         },
@@ -184,7 +178,7 @@ Ext.define('NX.coreui.controller.Search', {
 
   /**
    * @private
-   * Initialize search criterias (filters) based on filter definition and (eventual) bookmarked criterias.
+   * Initialize search criterias (filters) based on filter definition and bookmarked criterias.
    */
   initCriterias: function() {
     var me = this,
