@@ -42,6 +42,8 @@ Ext.define('NX.controller.Drilldown', {
 
   getDescription: Ext.emptyFn,
 
+  loadedLists: 0,
+
   /**
    * @cfg {Function} optional function to be called on delete
    */
@@ -137,6 +139,17 @@ Ext.define('NX.controller.Drilldown', {
     return lists;
   },
 
+  onAfterRender: function () {
+    var me = this,
+      lists = me.getLists();
+
+    for (var i = 0; i < lists.length; ++i) {
+      // Accommodates filtering. Allows the data in the first list to load, then navigate
+      lists[i].mon(lists[i].getStore(), 'load', me.onStoreLoad, me);
+    }
+    me.loadStore();
+  },
+
   loadStore: function () {
     var me = this,
         lists = me.getLists();
@@ -157,11 +170,19 @@ Ext.define('NX.controller.Drilldown', {
     var me = this,
       lists = me.getLists();
 
-    console.log("onStoreLoad()");
-
-    if (lists.length) {
-      me.navigateTo(NX.Bookmarks.getBookmark());
+    // Return if no lists exist
+    if (!lists.length) {
+      return;
     }
+
+    // Make sure all lists have loaded
+    for (var i = 0; i < lists.length; ++i) {
+      if (!lists[i]) {
+        return;
+      }
+    }
+
+    me.navigateTo(NX.Bookmarks.getBookmark());
   },
 
   reselect: function () {
@@ -180,17 +201,6 @@ Ext.define('NX.controller.Drilldown', {
     if (lists.length) {
       me.loadStore();
     }
-  },
-
-  onAfterRender: function () {
-    var me = this,
-        lists = me.getLists();
-
-    if (lists.length) {
-      // Accommodates filtering. Allows the data in the first list to load, then navigate
-      lists[0].mon(lists[0].getStore(), 'load', me.onStoreLoad, me);
-    }
-    me.loadStore();
   },
 
   onCellClick: function(list, td, cellIndex, model) {
