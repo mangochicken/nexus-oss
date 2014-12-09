@@ -45,11 +45,6 @@ Ext.define('NX.view.drilldown.Panel', {
     me.query('nx-drilldown-item')[index].setItemClass(cls);
   },
 
-  setItemBookmark: function (index, bookmark, scope) {
-    var me = this;
-    me.query('nx-drilldown-item')[index].setItemBookmark(bookmark, scope);
-  },
-
   /**
    * @override
    */

@@ -245,7 +245,7 @@ Ext.define('NX.controller.Drilldown', {
       if (list === lists[i].getView() && model) {
         lists[i].fireEvent("selection", list, model);
         me.onModelChanged(model);
-        feature.setItemBookmark(i, NX.Bookmarks.getBookmark(), me);
+        feature.setItemBookmark(i, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, i + 1)), me);
 
         // Show the next view in line
         feature.showChild(i + 1, animate);
@@ -330,7 +330,6 @@ Ext.define('NX.controller.Drilldown', {
             if (model) {
               lists[index].fireEvent("selection", lists[index], model);
               me.onModelChanged(model);
-              feature.setItemBookmark(index, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, index)), me);
             }
           }
         }
