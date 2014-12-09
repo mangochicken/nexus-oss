@@ -42,8 +42,6 @@ Ext.define('NX.controller.Drilldown', {
 
   getDescription: Ext.emptyFn,
 
-  loadedLists: 0,
-
   /**
    * @cfg {Function} optional function to be called on delete
    */
@@ -143,10 +141,9 @@ Ext.define('NX.controller.Drilldown', {
     var me = this,
       lists = me.getLists();
 
-    for (var i = 0; i < lists.length; ++i) {
-      // Accommodates filtering. Allows the data in the first list to load, then navigate
-      lists[i].mon(lists[i].getStore(), 'load', me.onStoreLoad, me);
-    }
+    // Trigger navigation when the first list loads
+    lists[0].mon(lists[0].getStore(), 'load', me.onStoreLoad, me);
+
     me.loadStore();
   },
 
@@ -309,41 +306,50 @@ Ext.define('NX.controller.Drilldown', {
     var me = this,
         lists = me.getLists(),
         feature = me.getFeature(),
-        store, parent_ids, last_id, model, modelId, tabs, index;
+        list_ids, tab_id = null, model, modelId, index;
 
     if (lists.length && bookmark) {
 
       me.logDebug('Navigate to: ' + bookmark.segments.join(':'));
-      parent_ids = bookmark.segments.slice(1);
-      last_id = parent_ids.pop();
+      list_ids = bookmark.segments.slice(1, lists.length + 1);
 
-      if (parent_ids.length || last_id) {
+      if (list_ids.length > lists.length) {
+        // The last ID refers to a tab
+        tab_id = list_ids.pop();
+      }
+
+      if (list_ids.length || tab_id) {
 
         // Select rows in all parent lists
-        for (index = 0; index < parent_ids.length; ++index) {
-          modelId = decodeURIComponent(parent_ids[index]);
+        for (index = 0; index < list_ids.length; ++index) {
+          modelId = decodeURIComponent(list_ids[index]);
 
           // Select rows
-          if (index < lists.length) {
-            store = lists[index].getStore();
-            model = store.getById(modelId);
-            if (model) {
-              lists[index].fireEvent("selection", lists[index], model);
-              me.onModelChanged(model);
-            }
+          model = lists[index].getStore().getById(modelId);
+          if (model) {
+            lists[index].fireEvent("selection", lists[index], model);
+            me.onModelChanged(model);
           }
-        }
 
-        // Show the last view
-        if (index < lists.length) {
-          // It’s a list, show the next view
-          modelId = decodeURIComponent(last_id);
-          me.loadView(lists[index].getView(), lists[index].getStore().getById(modelId), false);
-        } else {
-          // It’s a tab, select and show it
-          modelId = decodeURIComponent(parent_ids[parent_ids.length - 1]);
-          me.loadView(lists[lists.length - 1].getView(), lists[lists.length - 1].getStore().getById(modelId), false);
-          feature.down('nx-drilldown-details').setActiveTabByBookmark(last_id);
+          // If this is the last list, load its data and attach a callback
+          if (index == list_ids.length - 1) {
+            lists[index].getStore().load({
+              scope: me,
+              callback: function() {
+                if (lists[index] && lists[index].isVisible()) {
+                  // Show the referenced view
+                  modelId = decodeURIComponent(list_ids[index]);
+                  me.loadView(lists[index].getView(), lists[index].getStore().getById(modelId), false);
+
+                  // Does the last ID refer to a tab?
+                  if (tab_id) {
+                    feature.down('nx-drilldown-details').setActiveTabByBookmark(tab_id);
+                  }
+                }
+              }
+            });
+            break;
+          }
         }
       }
       else {
@@ -353,7 +359,7 @@ Ext.define('NX.controller.Drilldown', {
     }
   },
 
-  // TODO: wire this to work with multiple list views
+  // FIXME: wire this to work with multiple list views
   onDelete: function () {
     var me = this,
         selection = me.getLists()[0].getSelectionModel().getSelection(),
