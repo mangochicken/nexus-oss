@@ -330,11 +330,13 @@ Ext.define('NX.controller.Drilldown', {
             me.onModelChanged(model);
           }
 
-          // If this is the last list, load its data and attach a callback
+          // If this is the last list, load its data and attach a callback (if necessary)
           if (index == list_ids.length - 1) {
-            if (lists[index].getStore().getById(modelId)) {
-              me.dataLoadedCallback(lists[index], modelId, tab_id);
-            } else {
+            me.dataLoadedCallback(lists[index], modelId, tab_id);
+
+            // If the data isn’t loaded yet, return here when it is. Only do this for sub-lists,
+            // otherwise, the load event on the first list will trigger navigateTo in an infinite loop
+            if (!lists[index].getStore().getById(modelId) && index > 0) {
               lists[index].getStore().load({
                 scope: me,
                 callback: function () { me.dataLoadedCallback(lists[index], modelId, tab_id); }

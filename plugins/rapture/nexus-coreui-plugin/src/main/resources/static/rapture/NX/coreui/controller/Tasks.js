@@ -361,8 +361,12 @@ Ext.define('NX.coreui.controller.Tasks', {
    */
   runTask: function() {
     var me = this,
-        model = me.getList().getSelectionModel().getSelection()[0],
-        description;
+        bookmark = NX.Bookmarks.getBookmark(),
+        model, modelId, description;
+
+    modelId = decodeURIComponent(bookmark.segments[1]);
+    model = me.getList().getStore().getById(modelId);
+    description = me.getDescription(model);
 
     if (model) {
       description = me.getDescription(model);
@@ -385,8 +389,12 @@ Ext.define('NX.coreui.controller.Tasks', {
    */
   stopTask: function() {
     var me = this,
-        model = me.getList().getSelectionModel().getSelection()[0],
-        description;
+      bookmark = NX.Bookmarks.getBookmark(),
+      model, modelId, description;
+
+    modelId = decodeURIComponent(bookmark.segments[1]);
+    model = me.getList().getStore().getById(modelId);
+    description = me.getDescription(model);
 
     if (model) {
       description = me.getDescription(model);
