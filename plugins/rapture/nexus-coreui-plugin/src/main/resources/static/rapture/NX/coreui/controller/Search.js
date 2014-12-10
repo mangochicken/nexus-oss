@@ -189,15 +189,19 @@ Ext.define('NX.coreui.controller.Search', {
         addCriteriaMenu = [],
         bookmarkSegments = NX.Bookmarks.getBookmark().segments,
         bookmarkValues = {},
+        filterSegments,
         criterias = {},
-        searchCriteria,
-        queryIndex;
+        searchCriteria, queryIndex, pair;
 
     // Extract the filter object from the URI
     if (bookmarkSegments && bookmarkSegments.length) {
       queryIndex = bookmarkSegments[0].indexOf('=');
       if (queryIndex != -1) {
-        bookmarkValues = JSON.parse(decodeURIComponent(bookmarkSegments[0].slice(queryIndex + 1)));
+        filterSegments = decodeURIComponent(bookmarkSegments[0].slice(queryIndex + 1)).split(' AND ');
+        for (var i = 0; i < filterSegments.length; ++i) {
+          pair = filterSegments[i].split('=');
+          bookmarkValues[pair[0]] = pair[1];
+        }
       }
     }
 
@@ -521,9 +525,8 @@ Ext.define('NX.coreui.controller.Search', {
    */
   bookmarkFilters: function() {
     var me = this,
-        filterObject = {},
-        firstSegment,
-        segments;
+        filterArray = [],
+        firstSegment, segments;
 
     // Remove any pre-existing query string
     firstSegment = NX.Bookmarks.getBookmark().getSegment(0);
@@ -534,12 +537,12 @@ Ext.define('NX.coreui.controller.Search', {
     // Add each criteria to the filter object
     Ext.Array.each(Ext.ComponentQuery.query('nx-searchfeature component[searchCriteria=true]'), function(cmp) {
       if (cmp.getValue() && !cmp.isHidden()) {
-        filterObject[cmp.criteriaId] = cmp.getValue();
+        filterArray.push(cmp.criteriaId + '=' + cmp.getValue());
       }
     });
 
     // Stringify and url encode the filter object, then bookmark it
-    segments = [firstSegment + "=" + encodeURIComponent(JSON.stringify(filterObject))]
+    segments = [firstSegment + "=" + encodeURIComponent(filterArray.join(' AND '))];
     NX.Bookmarks.bookmark(NX.Bookmarks.fromSegments(segments), me);
   },
 
