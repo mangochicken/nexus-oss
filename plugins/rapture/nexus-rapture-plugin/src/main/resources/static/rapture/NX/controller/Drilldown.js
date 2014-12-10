@@ -241,7 +241,11 @@ Ext.define('NX.controller.Drilldown', {
       if (list === lists[i].getView() && model) {
         lists[i].fireEvent("selection", list, model);
         me.onModelChanged(model);
-        feature.setItemBookmark(i, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, i + 1)), me);
+
+        // Set all child bookmarks
+        for (var j = 0; j <= i; ++j) {
+          feature.setItemBookmark(j, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, j + 1)), me);
+        }
 
         // Show the next view in line
         feature.showChild(i + 1, animate);
@@ -258,22 +262,18 @@ Ext.define('NX.controller.Drilldown', {
         lists = me.getLists(),
         feature = me.getFeature(),
         tabs = feature.down('nx-drilldown-details'),
-        bookmark = NX.Bookmarks.fromToken(NX.Bookmarks.getBookmark().getSegment(0)),
+        bookmark = NX.Bookmarks.getBookmark().segments,
         segments = [],
-        selected,
         selectedTabBookmark,
         index;
+
+    // Add the root element of the bookmark
+    segments.push(bookmark.shift());
 
     // Find all parent models and add them to the bookmark array
     for (index = 0; index < lists.length; ++index) {
       if (!lists[index].getView().getNode(model)) {
-        selected = lists[index].getSelectionModel().getSelection();
-        if (selected.length === 1) {
-          segments.push(encodeURIComponent(selected[0].getId()));
-        } else {
-          // Error: cannot construct a complete path
-          return;
-        }
+        segments.push(bookmark.shift());
       } else {
         // All done adding parents
         break;
@@ -293,8 +293,7 @@ Ext.define('NX.controller.Drilldown', {
       }
     }
 
-    bookmark.appendSegments(segments);
-    NX.Bookmarks.bookmark(bookmark, me);
+    NX.Bookmarks.bookmark(NX.Bookmarks.fromSegments(segments, me), me);
   },
 
   /**
