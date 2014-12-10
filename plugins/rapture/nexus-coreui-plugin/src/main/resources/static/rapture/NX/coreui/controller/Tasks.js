@@ -361,14 +361,14 @@ Ext.define('NX.coreui.controller.Tasks', {
    */
   runTask: function() {
     var me = this,
-        model = me.selectedModel(),
+        model = me.getList().getSelectionModel().getSelection()[0],
         description;
 
     if (model) {
       description = me.getDescription(model);
       NX.Dialogs.askConfirmation('Confirm?', 'Run ' + description + ' task?', function() {
         NX.direct.coreui_Task.run(model.getId(), function(response) {
-          me.loadStore();
+          //me.loadStore();
           if (Ext.isObject(response) && response.success) {
             NX.Messages.add({
               text: 'Task started: ' + description, type: 'success'
@@ -385,14 +385,14 @@ Ext.define('NX.coreui.controller.Tasks', {
    */
   stopTask: function() {
     var me = this,
-        model = me.selectedModel(),
+        model = me.getList().getSelectionModel().getSelection()[0],
         description;
 
     if (model) {
       description = me.getDescription(model);
       NX.Dialogs.askConfirmation('Confirm?', 'Stop ' + description + ' task?', function() {
         NX.direct.coreui_Task.stop(model.getId(), function(response) {
-          me.loadStore();
+          //me.loadStore();
           if (Ext.isObject(response) && response.success) {
             NX.Messages.add({
               text: 'Task stopped: ' + description, type: 'success'

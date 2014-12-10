@@ -476,12 +476,11 @@ Ext.define('NX.coreui.controller.Capabilities', {
    */
   enableCapability: function(button) {
     var me = this,
-        list = button.up('grid'),
-        model = list.getSelectionModel().getSelection()[0],
+        model = me.getList().getSelectionModel().getSelection()[0],
         description = me.getDescription(model);
 
     NX.direct.capability_Capability.enable(model.getId(), function(response) {
-      me.loadStore();
+      //me.loadStore();
       if (Ext.isObject(response) && response.success) {
         NX.Messages.add({
           text: 'Capability enabled: ' + description, type: 'success'
@@ -496,12 +495,11 @@ Ext.define('NX.coreui.controller.Capabilities', {
    */
   disableCapability: function(button) {
     var me = this,
-        list = button.up('grid'),
-        model = list.getSelectionModel().getSelection()[0],
+        model = me.getList().getSelectionModel().getSelection()[0],
         description = me.getDescription(model);
 
     NX.direct.capability_Capability.disable(model.getId(), function(response) {
-      me.loadStore();
+      //me.loadStore();
       if (Ext.isObject(response) && response.success) {
         NX.Messages.add({
           text: 'Capability disabled: ' + description, type: 'success'

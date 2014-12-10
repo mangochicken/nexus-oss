@@ -151,10 +151,8 @@ Ext.define('NX.controller.Drilldown', {
     var me = this,
         lists = me.getLists();
 
-    for (var i = 0; i < lists.length; ++i) {
-      lists[i].getStore().clearFilter();
-      lists[i].getStore().load();
-    }
+    lists[0].getStore().clearFilter();
+    lists[0].getStore().load();
   },
 
   loadStoreAndSelect: function (model) {
@@ -334,21 +332,14 @@ Ext.define('NX.controller.Drilldown', {
 
           // If this is the last list, load its data and attach a callback
           if (index == list_ids.length - 1) {
-            lists[index].getStore().load({
-              scope: me,
-              callback: function() {
-                if (lists[index] && lists[index].isVisible()) {
-                  // Show the referenced view
-                  modelId = decodeURIComponent(list_ids[index]);
-                  me.loadView(lists[index].getView(), lists[index].getStore().getById(modelId), false);
-
-                  // Does the last ID refer to a tab?
-                  if (tab_id) {
-                    feature.down('nx-drilldown-details').setActiveTabByBookmark(tab_id);
-                  }
-                }
-              }
-            });
+            if (lists[index].getStore().getById(modelId)) {
+              me.dataLoadedCallback(lists[index], modelId, tab_id);
+            } else {
+              lists[index].getStore().load({
+                scope: me,
+                callback: function () { me.dataLoadedCallback(lists[index], modelId, tab_id); }
+              });
+            }
             break;
           }
         }
@@ -356,6 +347,22 @@ Ext.define('NX.controller.Drilldown', {
       else {
         lists[0].getSelectionModel().deselectAll();
         me.loadView(lists[0].getView(), null, false);
+      }
+    }
+  },
+
+  dataLoadedCallback: function(list, modelId, tabId) {
+    var me = this,
+      feature = this.getFeature();
+
+    if (list && list.isVisible()) {
+      // Show the referenced view
+      modelId = decodeURIComponent(modelId);
+      me.loadView(list.getView(), list.getStore().getById(modelId), false);
+
+      // Is a tab specified?
+      if (tabId) {
+        feature.down('nx-drilldown-details').setActiveTabByBookmark(tabId);
       }
     }
   },
