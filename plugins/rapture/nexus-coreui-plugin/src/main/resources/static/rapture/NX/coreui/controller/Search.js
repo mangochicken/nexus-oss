@@ -408,14 +408,11 @@ Ext.define('NX.coreui.controller.Search', {
     me.onSearchResultVersionSelection(null);
 
     if (searchResultModel) {
-      searchResultDetails.items.get(0).hide();
-      searchResultDetails.items.get(1).show();
-      searchResultDetails.items.get(1).items.get(0).showInfo({
+      searchResultDetails.items.get(0).showInfo({
         'Group': searchResultModel.get('groupId'),
         'Name': searchResultModel.get('artifactId'),
         'Format': searchResultModel.get('format')
       });
-      searchResultVersion.show();
       searchResultVersionStore.clearFilter(true);
       searchResultVersionStore.addFilter(me.getSearchResultStore().filters.items, false);
       searchResultVersionStore.addFilter([
@@ -428,11 +425,6 @@ Ext.define('NX.coreui.controller.Search', {
           value: searchResultModel.get('artifactId')
         }
       ]);
-    }
-    else {
-      searchResultDetails.items.get(0).show();
-      searchResultDetails.items.get(1).hide();
-      searchResultVersion.hide();
     }
   },
 

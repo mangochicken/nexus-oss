@@ -71,25 +71,10 @@ Ext.define('NX.coreui.view.search.SearchFeature', {
       items: [
         {
           itemId: 'searchResultDetails',
-          xtype: 'panel',
-          layout: {
-            type: 'vbox',
-            align: 'stretch',
-            pack: 'start'
-          },
-          items: [
-            {
-              html: '<div class="x-grid-empty">Select a component to view details</div>'
-            },
-            {
-              xtype: 'nx-coreui-search-result-details',
-              hidden: true
-            }
-          ]
+          xtype: 'nx-coreui-search-result-details'
         },
         {
           xtype: 'nx-coreui-search-result-version-list',
-          hidden: true,
           flex: 1
         }
       ]
