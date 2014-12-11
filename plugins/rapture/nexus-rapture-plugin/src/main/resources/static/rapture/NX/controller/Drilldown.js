@@ -50,11 +50,11 @@ Ext.define('NX.controller.Drilldown', {
   onLaunch: function () {
     var me = this;
     me.getApplication().getIconController().addIcons({
-      'masterdetail-info': {
+      'drilldown-info': {
         file: 'information.png',
         variants: ['x16', 'x32']
       },
-      'masterdetail-warning': {
+      'drilldown-warning': {
         file: 'warning.png',
         variants: ['x16', 'x32']
       }
