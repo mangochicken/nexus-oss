@@ -560,7 +560,7 @@ Ext.define('NX.coreui.controller.Search', {
     if (!searchFeature || (searchFeature.searchFilter.getId() !== 'keyword')) {
       if (searchValue) {
         NX.Bookmarks.navigateTo(
-            NX.Bookmarks.fromSegments(['browse/search', 'keyword=' + encodeURIComponent(searchValue)]),
+            NX.Bookmarks.fromToken('browse/search=' + encodeURIComponent('keyword=' + searchValue)),
             me
         );
       }
