@@ -206,7 +206,7 @@ Ext.define('NX.coreui.controller.Roles', {
     button.mon(
         NX.Conditions.and(
             NX.Conditions.isPermitted(me.permission, 'delete'),
-            NX.Conditions.gridHasSelection(me.list, function(model) {
+            NX.Conditions.gridHasSelection(me.masters[0], function(model) {
               return !model.get('readOnly');
             })
         ),

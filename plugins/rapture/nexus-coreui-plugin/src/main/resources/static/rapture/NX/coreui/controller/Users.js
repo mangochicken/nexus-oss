@@ -465,7 +465,7 @@ Ext.define('NX.coreui.controller.Users', {
     button.mon(
         NX.Conditions.and(
             NX.Conditions.isPermitted(me.permission, 'delete'),
-            NX.Conditions.gridHasSelection(me.list, function(model) {
+            NX.Conditions.gridHasSelection(me.masters[0], function(model) {
               return !model.get('external')
                   && (model.getId() !== NX.State.getUser().id)
                   && (model.getId() !== NX.State.getValue('anonymousUsername'));
@@ -515,7 +515,7 @@ Ext.define('NX.coreui.controller.Users', {
                 NX.Conditions.isPermitted('security:userschangepw', 'create'),
                 NX.Conditions.isPermitted('security:usersreset', 'delete')
             ),
-            NX.Conditions.gridHasSelection(me.list, function(model) {
+            NX.Conditions.gridHasSelection(me.masters[0], function(model) {
               return !model.get('external') && model.getId() !== NX.State.getValue('anonymousUsername');
             })
         ),
