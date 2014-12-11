@@ -163,11 +163,21 @@ Ext.define('NX.controller.Drilldown', {
     lists[0].getStore().load();
   },
 
-  loadStoreAndSelect: function (model) {
-    var me = this;
+  loadStoreAndSelect: function (modelId) {
+    var me = this,
+      lists = me.getLists(),
+      model;
 
-    me.bookmark(model);
     me.loadStore();
+
+    // Find the model belonging to this id, and bookmark it
+    for (var i = 0; i < lists.length; ++i) {
+      model = lists[i].getStore().getById(modelId);
+      if (model) {
+        me.bookmark(model);
+        break;
+      }
+    }
   },
 
   /**
