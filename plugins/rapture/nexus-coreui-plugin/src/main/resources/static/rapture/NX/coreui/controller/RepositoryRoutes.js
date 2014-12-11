@@ -25,7 +25,7 @@ Ext.define('NX.coreui.controller.RepositoryRoutes', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-repositoryroute-list',
+  masters: 'nx-coreui-repositoryroute-list',
 
   models: [
     'RepositoryRoute'

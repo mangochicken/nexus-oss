@@ -29,7 +29,7 @@ Ext.define('NX.coreui.controller.Users', {
     'NX.Dialogs'
   ],
 
-  list: 'nx-coreui-user-list',
+  masters: 'nx-coreui-user-list',
 
   models: [
     'User'

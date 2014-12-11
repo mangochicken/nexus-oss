@@ -66,21 +66,21 @@ Ext.define('NX.controller.Drilldown', {
         componentListener = {};
 
     // Normalize lists into an array
-    if (!Ext.isArray(me.list)) {
-      me.list = [me.list];
+    if (!Ext.isArray(me.masters)) {
+      me.masters = [me.masters];
     }
 
     // Add event handlers to each list
-    for (var i = 0; i < me.list.length; ++i) {
-      componentListener[me.list[i]] = {
+    for (var i = 0; i < me.masters.length; ++i) {
+      componentListener[me.masters[i]] = {
         afterrender: me.onAfterRender,
         selection: me.onSelection,
         cellclick: me.onCellClick
       };
-      componentListener[me.list[i] + ' button[action=new]'] = {
+      componentListener[me.masters[i] + ' button[action=new]'] = {
         afterrender: me.bindNewButton
       };
-      componentListener[me.list[i] + ' ^ nx-drilldown-panel nx-drilldown-details > tabpanel'] = {
+      componentListener[me.masters[i] + ' ^ nx-drilldown-panel nx-drilldown-details > tabpanel'] = {
         tabchange: function() {
           // Get the model for the last master
           var segments = NX.Bookmarks.getBookmark().getSegments().slice(1),
@@ -95,7 +95,7 @@ Ext.define('NX.controller.Drilldown', {
 
       // bind to a delete button if delete function defined
       if (me.deleteModel) {
-        componentListener[me.list[i] + ' ^ nx-drilldown-panel nx-drilldown-details button[action=delete]'] = {
+        componentListener[me.masters[i] + ' ^ nx-drilldown-panel nx-drilldown-details button[action=delete]'] = {
           afterrender: me.bindDeleteButton,
           click: me.onDelete
         };
@@ -131,8 +131,8 @@ Ext.define('NX.controller.Drilldown', {
       lists = [];
 
     if (feature) {
-      for (var i = 0; i < me.list.length; ++i) {
-        lists.push(feature.down(me.list[i]));
+      for (var i = 0; i < me.masters.length; ++i) {
+        lists.push(feature.down(me.masters[i]));
       }
     }
 

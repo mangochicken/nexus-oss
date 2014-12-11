@@ -26,7 +26,7 @@ Ext.define('NX.coreui.controller.Capabilities', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-capability-list',
+  masters: 'nx-coreui-capability-list',
 
   stores: [
     'Capability',

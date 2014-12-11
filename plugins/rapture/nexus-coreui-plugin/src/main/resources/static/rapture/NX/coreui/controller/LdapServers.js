@@ -25,7 +25,7 @@ Ext.define('NX.coreui.controller.LdapServers', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-ldapserver-list',
+  masters: 'nx-coreui-ldapserver-list',
 
   models: [
     'LdapServer'

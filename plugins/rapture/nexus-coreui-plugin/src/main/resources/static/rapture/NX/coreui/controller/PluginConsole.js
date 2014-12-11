@@ -24,7 +24,7 @@ Ext.define('NX.coreui.controller.PluginConsole', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-system-pluginlist',
+  masters: 'nx-coreui-system-pluginlist',
 
   stores: [
     'PluginInfo'

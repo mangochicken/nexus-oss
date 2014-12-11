@@ -25,7 +25,7 @@ Ext.define('NX.coreui.controller.RepositoryTargets', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-repositorytarget-list',
+  masters: 'nx-coreui-repositorytarget-list',
 
   models: [
     'RepositoryTarget'

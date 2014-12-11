@@ -29,7 +29,7 @@ Ext.define('NX.coreui.controller.Repositories', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-repository-list',
+  masters: 'nx-coreui-repository-list',
 
   models: [
     'Repository'

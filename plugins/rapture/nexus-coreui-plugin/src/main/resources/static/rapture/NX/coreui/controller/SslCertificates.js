@@ -24,7 +24,7 @@ Ext.define('NX.coreui.controller.SslCertificates', {
     'NX.Permissions'
   ],
 
-  list: 'nx-coreui-sslcertificate-list',
+  masters: 'nx-coreui-sslcertificate-list',
 
   models: [
     'SslCertificate'

@@ -26,7 +26,7 @@ Ext.define('NX.coreui.controller.Feeds', {
     'NX.Windows'
   ],
 
-  list: 'nx-coreui-feed-list',
+  masters: 'nx-coreui-feed-list',
 
   mixins: {
     logAware: 'NX.LogAware'
