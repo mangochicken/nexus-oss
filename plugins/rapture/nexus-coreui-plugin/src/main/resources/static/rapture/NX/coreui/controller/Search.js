@@ -374,6 +374,8 @@ Ext.define('NX.coreui.controller.Search', {
   },
 
   /**
+   * When a list managed by this controller is clicked, route the event to the proper handler
+   *
    * @override
    */
   onSelection: function(list, model) {

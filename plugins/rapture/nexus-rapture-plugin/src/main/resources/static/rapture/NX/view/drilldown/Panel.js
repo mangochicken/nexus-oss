@@ -35,17 +35,25 @@ Ext.define('NX.view.drilldown.Panel', {
     'NX.Icons'
   ],
 
+  /**
+   * Set the name of the referenced drilldown item (appears in the breadcrumb)
+   */
   setItemName: function (index, text) {
     var me = this;
     me.query('nx-drilldown-item')[index].setItemName(text);
   },
 
+  /**
+   * Set the icon class of the references drilldown item (appears in the breadcrumb)
+   */
   setItemClass: function (index, cls) {
     var me = this;
     me.query('nx-drilldown-item')[index].setItemClass(cls);
   },
 
   /**
+   * Create an event handler so the panel will resize correctly when the window does
+   *
    * @override
    */
   onRender: function () {
@@ -64,6 +72,9 @@ Ext.define('NX.view.drilldown.Panel', {
     me.callParent(arguments);
   },
 
+  /**
+   * Given N drilldown items, this panel should have a width of N times the current screen width
+   */
   syncSizeToOwner: function () {
     var me = this;
     if (me.ownerCt) {
@@ -72,6 +83,12 @@ Ext.define('NX.view.drilldown.Panel', {
     }
   },
 
+  /**
+   * Shift this panel to display the referenced drilldown item
+   *
+   * @param index The index of the drilldown item to display
+   * @param animate Set to “true” if the view should slide into place, “false” if it should just appear
+   */
   showChild: function (index, animate) {
     var me = this;
 
@@ -92,6 +109,9 @@ Ext.define('NX.view.drilldown.Panel', {
     }
   },
 
+  /**
+   * Update the breadcrumb based on the itemName and itemClass of drilldown items
+   */
   refreshBreadcrumb: function() {
     var me = this;
     var content = me.up('#feature-content');
@@ -153,7 +173,7 @@ Ext.define('NX.view.drilldown.Panel', {
               xtype: 'button',
               scale: 'medium',
               ui: 'drilldown',
-              disabled: (i == me.currentIndex ? true : false), // Disabled if it’s the last item in the breadcrumb
+              disabled: (i === me.currentIndex ? true : false), // Disabled if it’s the last item in the breadcrumb
               text: me.items.items[j].itemName,
               handler: function() {
                 me.showChild(j, true);

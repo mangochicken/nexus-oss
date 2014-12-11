@@ -27,7 +27,7 @@ Ext.define('NX.view.drilldown.Master', {
   },
 
   /**
-   * Put a drilldown affordance at the end of each item in the list
+   * Put a drilldown affordance ‘>’ at the end of each item in the list
    *
    * @param ct The content header for the grid
    */

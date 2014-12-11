@@ -13,7 +13,7 @@
 /*global Ext, NX*/
 
 /**
- * Abstract Master/Detail panel.
+ * The foundation class for new drilldowns. Extend this.
  *
  * @since 3.0
  */
@@ -105,6 +105,9 @@ Ext.define('NX.view.drilldown.Drilldown', {
     }
   },
 
+  /**
+   * Shorthand to assign the same icon to all drilldown items, scaled appropriately.
+   */
   setDefaultIconName: function (iconName) {
     var items = this.query('nx-drilldown-item');
     for (var i = 0; i < items.length; ++i) {
@@ -112,21 +115,33 @@ Ext.define('NX.view.drilldown.Drilldown', {
     }
   },
 
+  /**
+   * Show the referenced drilldown item
+   */
   showChild: function (index, animate) {
     var me = this;
     me.down('nx-drilldown-panel').showChild(index, animate);
   },
 
+  /**
+   * Set the name of the referenced drilldown item
+   */
   setItemName: function (index, text) {
     var me = this;
     me.query('nx-drilldown-item')[index].setItemName(text);
   },
 
+  /**
+   * Set the icon class of the referenced drilldown item
+   */
   setItemClass: function (index, cls) {
     var me = this;
     me.query('nx-drilldown-item')[index].setItemClass(cls);
   },
 
+  /**
+   * Set the bookmark of the breadcrumb segment associated with the referenced drilldown item
+   */
   setItemBookmark: function (index, bookmark, scope) {
     var me = this;
     me.query('nx-drilldown-item')[index].setItemBookmark(bookmark, scope);
@@ -148,7 +163,7 @@ Ext.define('NX.view.drilldown.Drilldown', {
     this.down('nx-drilldown-details').clearWarning();
   },
 
-  /*
+  /**
    * Add a tab to the default detail panel
    *
    * Note: this will have no effect if a custom detail panel has been specified
@@ -160,7 +175,7 @@ Ext.define('NX.view.drilldown.Drilldown', {
     }
   },
 
-  /*
+  /**
    * Remove a panel from the default detail panel
    *
    * Note: this will have no effect if a custom detail panel has been specified

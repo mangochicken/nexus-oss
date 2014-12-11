@@ -28,14 +28,23 @@ Ext.define('NX.view.drilldown.Item', {
 
   layout: 'fit',
 
+  /**
+   * Set the name of this drilldown item (appears in the breadcrumb)
+   */
   setItemName: function(text) {
     this.itemName = text;
   },
 
+  /**
+   * Set the icon class of this drilldown item (appears in the breadcrumb)
+   */
   setItemClass: function(cls) {
     this.itemClass = cls;
   },
 
+  /**
+   * Set the page to load when the breadcrumb segment associated with this drilldown item is clicked
+   */
   setItemBookmark: function(bookmark, scope) {
     this.itemBookmark = {
       obj: bookmark,
