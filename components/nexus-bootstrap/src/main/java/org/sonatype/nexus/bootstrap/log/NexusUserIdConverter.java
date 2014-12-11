@@ -26,7 +26,7 @@ public class NexusUserIdConverter
   /**
    * "nexus.user.id" request attribute name
    *
-   * @see org.sonatype.nexus.web.internal.SecurityFilter
+   * @see org.sonatype.nexus.web.SecurityFilter
    */
   private static final String ATTR_USER_ID = "nexus.user.id";
 
