@@ -310,7 +310,7 @@ Ext.define('NX.controller.Drilldown', {
       }
     }
 
-    NX.Bookmarks.bookmark(NX.Bookmarks.fromSegments(segments, me), me);
+    NX.Bookmarks.bookmark(NX.Bookmarks.fromSegments(segments), me);
   },
 
   /**
@@ -320,7 +320,6 @@ Ext.define('NX.controller.Drilldown', {
   navigateTo: function (bookmark) {
     var me = this,
         lists = me.getLists(),
-        feature = me.getFeature(),
         list_ids, tab_id = null, model, modelId, index;
 
     if (lists.length && bookmark) {
