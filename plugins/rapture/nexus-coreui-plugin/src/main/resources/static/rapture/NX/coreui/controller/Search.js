@@ -187,7 +187,7 @@ Ext.define('NX.coreui.controller.Search', {
         searchCriteriaPanel = searchPanel.down('#criteria'),
         searchCriteriaStore = me.getSearchCriteriaStore(),
         addCriteriaMenu = [],
-        bookmarkSegments = NX.Bookmarks.getBookmark().segments,
+        bookmarkSegments = NX.Bookmarks.getBookmark().getSegments(),
         bookmarkValues = {},
         filterSegments,
         criterias = {},

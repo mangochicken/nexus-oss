@@ -244,7 +244,7 @@ Ext.define('NX.controller.Menu', {
 
     if (bookmark) {
       // Get the path (minus an optional filter string)
-      if (bookmark.segments.length) {
+      if (bookmark.getSegments().length) {
         queryIndex = bookmark.getSegment(0).indexOf('=');
         if (queryIndex != -1) {
           menuBookmark = bookmark.getSegment(0).slice(0, bookmark.getSegment(0).indexOf('='));

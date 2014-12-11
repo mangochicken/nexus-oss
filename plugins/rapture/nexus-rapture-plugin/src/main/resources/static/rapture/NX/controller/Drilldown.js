@@ -83,7 +83,7 @@ Ext.define('NX.controller.Drilldown', {
       componentListener[me.list[i] + ' ^ nx-drilldown-panel nx-drilldown-details > tabpanel'] = {
         tabchange: function() {
           // Get the model for the last master
-          var segments = NX.Bookmarks.getBookmark().segments.slice(1),
+          var segments = NX.Bookmarks.getBookmark().getSegments().slice(1),
             lists = me.getLists(),
             modelId = segments[lists.length - 1],
             model = lists[lists.length - 1].getStore().getById(modelId);
@@ -261,7 +261,7 @@ Ext.define('NX.controller.Drilldown', {
 
         // Set all child bookmarks
         for (var j = 0; j <= i; ++j) {
-          feature.setItemBookmark(j, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().segments.slice(0, j + 1)), me);
+          feature.setItemBookmark(j, NX.Bookmarks.fromSegments(NX.Bookmarks.getBookmark().getSegments().slice(0, j + 1)), me);
         }
 
         // Show the next view in line
@@ -279,7 +279,7 @@ Ext.define('NX.controller.Drilldown', {
         lists = me.getLists(),
         feature = me.getFeature(),
         tabs = feature.down('nx-drilldown-details'),
-        bookmark = NX.Bookmarks.getBookmark().segments,
+        bookmark = NX.Bookmarks.getBookmark().getSegments(),
         segments = [],
         selectedTabBookmark,
         index;
@@ -324,8 +324,8 @@ Ext.define('NX.controller.Drilldown', {
 
     if (lists.length && bookmark) {
 
-      me.logDebug('Navigate to: ' + bookmark.segments.join(':'));
-      list_ids = bookmark.segments.slice(1, lists.length + 1);
+      me.logDebug('Navigate to: ' + bookmark.getSegments().join(':'));
+      list_ids = bookmark.getSegments().slice(1, lists.length + 1);
 
       if (list_ids.length > lists.length) {
         // The last ID refers to a tab

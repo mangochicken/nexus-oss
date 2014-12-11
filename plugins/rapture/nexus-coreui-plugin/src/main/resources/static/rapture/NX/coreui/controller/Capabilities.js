@@ -479,7 +479,7 @@ Ext.define('NX.coreui.controller.Capabilities', {
       bookmark = NX.Bookmarks.getBookmark(),
       model, modelId, description;
 
-    modelId = decodeURIComponent(bookmark.segments[1]);
+    modelId = decodeURIComponent(bookmark.getSegment(1));
     model = me.getList().getStore().getById(modelId);
     description = me.getDescription(model);
 
@@ -502,7 +502,7 @@ Ext.define('NX.coreui.controller.Capabilities', {
       bookmark = NX.Bookmarks.getBookmark(),
       model, modelId, description;
 
-    modelId = decodeURIComponent(bookmark.segments[1]);
+    modelId = decodeURIComponent(bookmark.getSegment(1));
     model = me.getList().getStore().getById(modelId);
     description = me.getDescription(model);
 
