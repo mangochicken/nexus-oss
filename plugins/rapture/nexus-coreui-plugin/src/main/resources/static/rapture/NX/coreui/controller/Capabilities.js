@@ -474,7 +474,7 @@ Ext.define('NX.coreui.controller.Capabilities', {
    * @private
    * Enables selected capability.
    */
-  enableCapability: function(button) {
+  enableCapability: function() {
     var me = this,
       bookmark = NX.Bookmarks.getBookmark(),
       model, modelId, description;
@@ -497,7 +497,7 @@ Ext.define('NX.coreui.controller.Capabilities', {
    * @private
    * Disables selected capability.
    */
-  disableCapability: function(button) {
+  disableCapability: function() {
     var me = this,
       bookmark = NX.Bookmarks.getBookmark(),
       model, modelId, description;

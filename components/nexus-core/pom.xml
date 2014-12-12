@@ -250,6 +250,12 @@
       <artifactId>shiro-web</artifactId>
     </dependency>
 
+    <!-- Scheduling -->
+    <dependency>
+      <groupId>org.sonatype.nexus</groupId>
+      <artifactId>nexus-scheduling</artifactId>
+    </dependency>
+
     <!-- SISU Container -->
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
@@ -284,11 +290,6 @@
     <dependency>
       <groupId>org.sonatype.nexus</groupId>
       <artifactId>nexus-ehcache</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.sonatype.nexus</groupId>
-      <artifactId>nexus-scheduler</artifactId>
     </dependency>
 
     <dependency>
@@ -429,13 +430,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <compilerId>groovy-eclipse-compiler</compilerId>
-        </configuration>
-      </plugin>
       <!--
       FIXME: Get rid of test-jar, these artifacts cause problems with transitive dependencies.
       -->

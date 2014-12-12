@@ -18,12 +18,14 @@ import java.util.List;
 
 import org.sonatype.nexus.integrationtests.AbstractNexusIntegrationTest;
 import org.sonatype.nexus.rest.model.ScheduledServiceListResource;
+import org.sonatype.nexus.scheduling.TaskInfo.CurrentState;
+import org.sonatype.nexus.scheduling.TaskInfo.State;
 import org.sonatype.nexus.test.utils.TaskScheduleUtil;
-import org.sonatype.scheduling.TaskState;
 
 import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -112,7 +114,7 @@ public class Nexus4066TaskMutualExclusionIT
     StringBuilder msg = new StringBuilder("Running tasks:\n");
     try {
       ScheduledServiceListResource task1 = createTask(repo1);
-      assertThat(task1.getStatus(), equalTo(TaskState.RUNNING.name()));
+      assertThat(task1.getStatus(), equalTo(State.RUNNING.name()));
 
       ScheduledServiceListResource task2 = createTask(repo2);
 
@@ -122,11 +124,17 @@ public class Nexus4066TaskMutualExclusionIT
         msg.append(allTask.getStatus()).append("\n");
       }
 
+      // refresh it, to let QZ do it's bookeeping, as in the moment of scheduling the fact
+      // about BLOCKED will not yet be known
+      task2 = TaskScheduleUtil.getTask(task2.getName());
+
       if (shouldWait) {
-        assertThat(task2.getStatus(), equalTo(TaskState.SLEEPING.name()));
+        // legacy REST API does not expose RunState, hence we can assert only against "readable state" that includes this information
+        assertThat(task2.getReadableStatus(), equalTo("Blocked"));
       }
       else {
-        assertThat(task2.getStatus(), equalTo(TaskState.RUNNING.name()));
+        // legacy REST API does not expose RunState, hence we can assert only against "readable state" that includes this information
+        assertThat(task2.getReadableStatus(), equalTo("Running"));
       }
     }
     catch (java.lang.AssertionError e) {
@@ -141,8 +149,9 @@ public class Nexus4066TaskMutualExclusionIT
     final String taskName = "SleepRepositoryTask_" + repo + "_" + System.nanoTime();
     TaskScheduleUtil.runTask(taskName, "SleepRepositoryTask", 0,
         newProperty("repositoryId", repo),
-        newProperty("time", String.valueOf(50)),
-        newProperty("cancellable", Boolean.toString(true))
+        newProperty("time", Integer.toString(50)),
+        newProperty("cancellable", Boolean.TRUE.toString()),
+        newProperty(".visible", Boolean.TRUE.toString())
     );
 
     Thread.sleep(2000);

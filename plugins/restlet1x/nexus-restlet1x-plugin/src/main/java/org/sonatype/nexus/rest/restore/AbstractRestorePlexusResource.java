@@ -21,8 +21,8 @@ import org.sonatype.nexus.proxy.repository.GroupRepository;
 import org.sonatype.nexus.proxy.repository.Repository;
 import org.sonatype.nexus.proxy.repository.ShadowRepository;
 import org.sonatype.nexus.rest.AbstractNexusPlexusResource;
-import org.sonatype.nexus.scheduling.NexusScheduler;
-import org.sonatype.nexus.scheduling.NexusTask;
+import org.sonatype.nexus.scheduling.TaskScheduler;
+import org.sonatype.nexus.scheduling.TaskConfiguration;
 
 import org.apache.commons.lang.StringUtils;
 import org.restlet.data.Request;
@@ -40,18 +40,18 @@ public abstract class AbstractRestorePlexusResource
 
   public static final String TARGET_ID = "target";
 
-  private NexusScheduler nexusScheduler;
+  private TaskScheduler nexusScheduler;
 
   public AbstractRestorePlexusResource() {
     this.setModifiable(true);
   }
 
   @Inject
-  public void setNexusScheduler(final NexusScheduler nexusScheduler) {
+  public void setNexusScheduler(final TaskScheduler nexusScheduler) {
     this.nexusScheduler = nexusScheduler;
   }
 
-  protected NexusScheduler getNexusScheduler() {
+  protected TaskScheduler getNexusScheduler() {
     return nexusScheduler;
   }
 
@@ -122,7 +122,7 @@ public abstract class AbstractRestorePlexusResource
     return path;
   }
 
-  public void handleDelete(NexusTask<?> task, Request request)
+  public void handleDelete(TaskConfiguration task, Request request)
       throws ResourceException
   {
     try {
@@ -139,7 +139,7 @@ public abstract class AbstractRestorePlexusResource
         }
       }
 
-      getNexusScheduler().submit("Internal", task);
+      getNexusScheduler().submit(task);
 
       throw new ResourceException(Status.SUCCESS_NO_CONTENT);
     }

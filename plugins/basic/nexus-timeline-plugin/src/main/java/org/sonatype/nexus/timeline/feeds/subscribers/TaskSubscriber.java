@@ -13,7 +13,6 @@
 
 package org.sonatype.nexus.timeline.feeds.subscribers;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -21,12 +20,10 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.sonatype.nexus.events.EventSubscriber;
-import org.sonatype.nexus.scheduling.AbstractNexusTask;
-import org.sonatype.nexus.scheduling.NexusTask;
-import org.sonatype.nexus.scheduling.events.NexusTaskEventStarted;
-import org.sonatype.nexus.scheduling.events.NexusTaskEventStoppedCanceled;
-import org.sonatype.nexus.scheduling.events.NexusTaskEventStoppedDone;
-import org.sonatype.nexus.scheduling.events.NexusTaskEventStoppedFailed;
+import org.sonatype.nexus.scheduling.events.TaskEventStarted;
+import org.sonatype.nexus.scheduling.events.TaskEventStoppedCanceled;
+import org.sonatype.nexus.scheduling.events.TaskEventStoppedDone;
+import org.sonatype.nexus.scheduling.events.TaskEventStoppedFailed;
 import org.sonatype.nexus.timeline.feeds.FeedEvent;
 import org.sonatype.nexus.timeline.feeds.FeedRecorder;
 
@@ -44,19 +41,20 @@ public class TaskSubscriber
     implements EventSubscriber
 {
   @Inject
-  public TaskSubscriber(final FeedRecorder feedRecorder) {
+  public TaskSubscriber(final FeedRecorder feedRecorder)
+  {
     super(feedRecorder);
   }
 
   @Subscribe
   @AllowConcurrentEvents
-  public void on(final NexusTaskEventStarted evt) {
+  public void on(final TaskEventStarted evt) {
     final Map<String, String> data = Maps.newHashMap();
-    putIfNotNull(data, "taskType", evt.getNexusTask().getClass().getName());
-    putIfNotNull(data, "taskId", evt.getNexusTask().getId());
-    putIfNotNull(data, "taskName", evt.getNexusTask().getName());
-    putIfNotNull(data, "taskAction", getActionFromTask(evt.getNexusTask()));
-    putIfNotNull(data, "taskMessage", getMessageFromTask(evt.getNexusTask()));
+    putIfNotNull(data, "taskType", evt.getTaskInfo().getConfiguration().getTypeId());
+    putIfNotNull(data, "taskId", evt.getTaskInfo().getId());
+    putIfNotNull(data, "taskName", evt.getTaskInfo().getName());
+    putIfNotNull(data, "taskAction", evt.getTaskInfo().getConfiguration().getTypeName());
+    putIfNotNull(data, "taskMessage", evt.getTaskInfo().getConfiguration().getMessage());
     final FeedEvent fe = new FeedEvent(
         FeedRecorder.FAMILY_TASK,
         FeedRecorder.TASK_STARTED,
@@ -70,14 +68,15 @@ public class TaskSubscriber
 
   @Subscribe
   @AllowConcurrentEvents
-  public void on(final NexusTaskEventStoppedDone evt) {
+  public void on(final TaskEventStoppedDone evt) {
     final Map<String, String> data = Maps.newHashMap();
-    putIfNotNull(data, "taskStarted", String.valueOf(evt.getStartedEvent().getEventDate().getTime()));
-    putIfNotNull(data, "taskType", evt.getNexusTask().getClass().getName());
-    putIfNotNull(data, "taskId", evt.getNexusTask().getId());
-    putIfNotNull(data, "taskName", evt.getNexusTask().getName());
-    putIfNotNull(data, "taskAction", getActionFromTask(evt.getNexusTask()));
-    putIfNotNull(data, "taskMessage", getMessageFromTask(evt.getNexusTask()));
+    long taskStarted = evt.getTaskInfo().getLastRunState() != null ? evt.getTaskInfo().getLastRunState().getRunStarted().getTime() : -1;
+    putIfNotNull(data, "taskStarted", String.valueOf(taskStarted));
+    putIfNotNull(data, "taskType", evt.getTaskInfo().getConfiguration().getTypeId());
+    putIfNotNull(data, "taskId", evt.getTaskInfo().getId());
+    putIfNotNull(data, "taskName", evt.getTaskInfo().getName());
+    putIfNotNull(data, "taskAction", evt.getTaskInfo().getConfiguration().getTypeName());
+    putIfNotNull(data, "taskMessage", evt.getTaskInfo().getConfiguration().getMessage());
     final FeedEvent fe = new FeedEvent(
         FeedRecorder.FAMILY_TASK,
         FeedRecorder.TASK_FINISHED,
@@ -91,14 +90,15 @@ public class TaskSubscriber
 
   @Subscribe
   @AllowConcurrentEvents
-  public void on(final NexusTaskEventStoppedCanceled evt) {
+  public void on(final TaskEventStoppedCanceled evt) {
     final Map<String, String> data = Maps.newHashMap();
-    putIfNotNull(data, "taskStarted", String.valueOf(evt.getStartedEvent().getEventDate().getTime()));
-    putIfNotNull(data, "taskType", evt.getNexusTask().getClass().getName());
-    putIfNotNull(data, "taskId", evt.getNexusTask().getId());
-    putIfNotNull(data, "taskName", evt.getNexusTask().getName());
-    putIfNotNull(data, "taskAction", getActionFromTask(evt.getNexusTask()));
-    putIfNotNull(data, "taskMessage", getMessageFromTask(evt.getNexusTask()));
+    long taskStarted = evt.getTaskInfo().getLastRunState() != null ? evt.getTaskInfo().getLastRunState().getRunStarted().getTime() : -1;
+    putIfNotNull(data, "taskStarted", String.valueOf(taskStarted));
+    putIfNotNull(data, "taskType", evt.getTaskInfo().getConfiguration().getTypeId());
+    putIfNotNull(data, "taskId", evt.getTaskInfo().getId());
+    putIfNotNull(data, "taskName", evt.getTaskInfo().getName());
+    putIfNotNull(data, "taskAction", evt.getTaskInfo().getConfiguration().getTypeName());
+    putIfNotNull(data, "taskMessage", evt.getTaskInfo().getConfiguration().getMessage());
     final FeedEvent fe = new FeedEvent(
         FeedRecorder.FAMILY_TASK,
         FeedRecorder.TASK_CANCELED,
@@ -112,15 +112,16 @@ public class TaskSubscriber
 
   @Subscribe
   @AllowConcurrentEvents
-  public void on(final NexusTaskEventStoppedFailed evt) {
+  public void on(final TaskEventStoppedFailed evt) {
     final Map<String, String> data = Maps.newHashMap();
-    putIfNotNull(data, "taskStarted", String.valueOf(evt.getStartedEvent().getEventDate().getTime()));
+    long taskStarted = evt.getTaskInfo().getLastRunState() != null ? evt.getTaskInfo().getLastRunState().getRunStarted().getTime() : -1;
+    putIfNotNull(data, "taskStarted", String.valueOf(taskStarted));
     putIfNotNull(data, "taskFailure", String.valueOf(evt.getFailureCause()));
-    putIfNotNull(data, "taskType", evt.getNexusTask().getClass().getName());
-    putIfNotNull(data, "taskId", evt.getNexusTask().getId());
-    putIfNotNull(data, "taskName", evt.getNexusTask().getName());
-    putIfNotNull(data, "taskAction", getActionFromTask(evt.getNexusTask()));
-    putIfNotNull(data, "taskMessage", getMessageFromTask(evt.getNexusTask()));
+    putIfNotNull(data, "taskType", evt.getTaskInfo().getConfiguration().getTypeId());
+    putIfNotNull(data, "taskId", evt.getTaskInfo().getId());
+    putIfNotNull(data, "taskName", evt.getTaskInfo().getName());
+    putIfNotNull(data, "taskAction", evt.getTaskInfo().getConfiguration().getTypeName());
+    putIfNotNull(data, "taskMessage", evt.getTaskInfo().getConfiguration().getMessage());
     final FeedEvent fe = new FeedEvent(
         FeedRecorder.FAMILY_TASK,
         FeedRecorder.TASK_FAILED,
@@ -130,37 +131,5 @@ public class TaskSubscriber
         data
     );
     getFeedRecorder().addEvent(fe);
-  }
-
-  // ==
-
-  protected String getActionFromTask(final NexusTask<?> task) {
-    // TODO: change of NexusTask in Quartz is anyway expected, so expose this
-    if (task instanceof AbstractNexusTask<?>) {
-      try {
-        final Method getActionMethod = AbstractNexusTask.class.getDeclaredMethod("getAction");
-        getActionMethod.setAccessible(true);
-        return (String) getActionMethod.invoke(task);
-      }
-      catch (Exception e) {
-        // nothing
-      }
-    }
-    return "UNKNOWN";
-  }
-
-  protected String getMessageFromTask(final NexusTask<?> task) {
-    // TODO: change of NexusTask in Quartz is anyway expected, so expose this
-    if (task instanceof AbstractNexusTask<?>) {
-      try {
-        final Method getMessageMethod = AbstractNexusTask.class.getDeclaredMethod("getMessage");
-        getMessageMethod.setAccessible(true);
-        return (String) getMessageMethod.invoke(task);
-      }
-      catch (Exception e) {
-        // nothing
-      }
-    }
-    return "UNKNOWN";
   }
 }
